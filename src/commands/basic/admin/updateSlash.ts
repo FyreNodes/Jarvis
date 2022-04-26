@@ -1,7 +1,6 @@
 import { ApplicationCommand, BasicCommandInfo, BasicCommandRun } from "@/Interfaces";
 import { Permissions } from "discord.js";
 import axios, { AxiosResponse } from 'axios';
-import config from '@config';
 import { Message } from "discord.js";
 
 export const run: BasicCommandRun = (client, message, args) => {
@@ -14,7 +13,7 @@ export const run: BasicCommandRun = (client, message, args) => {
                 method: 'POST',
                 url: `https://discord.com/api/v9/applications/805565109992685580/commands`,
                 headers: {
-                    'Authorization': `Bot ${config.bot.token}`,
+                    'Authorization': `Bot ${process.env.TOKEN}`,
                     'Content-Type': 'application/json'
                 },
                 data: JSONdata

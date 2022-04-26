@@ -13,8 +13,7 @@
         "outDir": "dist",
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"],
-            "@config": ["./src/utils/config.ts"]
+            "@/*": ["./src/*"]
         },
         "typeRoots": [
             "node_modules/@types"

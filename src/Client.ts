@@ -1,6 +1,5 @@
 import { Client as DiscordClient, Collection } from 'discord.js';
 import { BasicCommand, ApplicationCommand } from '@/Interfaces';
-import config from '@config';
 import { applicationCommandHandler, basicCommandHandler, eventHandler } from '@/Handlers';
 
 export default class Client extends DiscordClient
@@ -12,6 +11,6 @@ export default class Client extends DiscordClient
         eventHandler(this);
         basicCommandHandler(this);
         applicationCommandHandler(this);
-        this.login(config.bot.token);
+        this.login(process.env.TOKEN);
     };
 };
