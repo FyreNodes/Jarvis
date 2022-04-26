@@ -1,6 +1,5 @@
 import Client from '@/Client';
-import { Intents, Options, Permissions } from 'discord.js';
-import 'dotenv/config';
+import { Intents, Options } from 'discord.js';
 
 const client: Client = new Client({
 	makeCache: Options.cacheWithLimits({

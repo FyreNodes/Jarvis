@@ -1,9 +1,11 @@
 import Client from "@/Client";
+import botConfig from "@/database/schemas/config";
 import { BasicCommand } from "@/Interfaces";
-import { Message, Permissions } from "discord.js";
+import { Message } from "discord.js";
 
 export default async (client: Client, message: Message) => {
-    const prefix: string = '!';
+    const cfg = await botConfig.findOne({ guildID: message.guild.id });
+    const prefix: string = await cfg.get('prefix');
     if (message.author.bot || !message.guild || !message.content.startsWith(prefix)) return;
     const args: string[] = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd: string = args.shift().toLowerCase();

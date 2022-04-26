@@ -1,10 +1,8 @@
 import { ApplicationCommand, BasicCommandInfo, BasicCommandRun } from "@/Interfaces";
-import { Permissions } from "discord.js";
 import axios, { AxiosResponse } from 'axios';
 import { Message } from "discord.js";
 
 export const run: BasicCommandRun = (client, message, args) => {
-    if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return;
     message.channel.send('Updating... This process may take up to 15 seconds to complete.').then(async (msg: Message) => {
         const responces: number[] = [];
         client.applicationCommands.forEach(async (data: ApplicationCommand) => {
@@ -36,5 +34,5 @@ export const run: BasicCommandRun = (client, message, args) => {
 export const info: BasicCommandInfo = {
     name: 'update',
     category: 'admin',
-    permissions: []
+    permissions: ["ADMINISTRATOR"]
 }

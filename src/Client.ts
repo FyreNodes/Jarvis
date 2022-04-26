@@ -1,6 +1,7 @@
 import { Client as DiscordClient, Collection } from 'discord.js';
 import { BasicCommand, ApplicationCommand } from '@/Interfaces';
 import { applicationCommandHandler, basicCommandHandler, eventHandler } from '@/Handlers';
+import connect from './database/connect';
 
 export default class Client extends DiscordClient
 {
@@ -11,6 +12,7 @@ export default class Client extends DiscordClient
         eventHandler(this);
         basicCommandHandler(this);
         applicationCommandHandler(this);
+        connect();
         this.login(process.env.TOKEN);
     };
 };
