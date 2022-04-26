@@ -6,4 +6,4 @@ export default async (client: Client) => {
     const status = await cfg.get('status');
     client.user.setPresence({ status: 'online', activities: [{ type: status.type, name: status.msg }] });
     console.log('ready');
-}
+};
