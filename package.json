@@ -1,0 +1,36 @@
+{
+	"name": "jarvis",
+	"packageManager": "yarn@3.2.0",
+	"description": "Multipurpose bot for FyreNodes Discord server.",
+	"version": "0.1.0",
+	"main": "index.ts",
+	"engines": {
+		"node": ">=16.6.0"
+	},
+	"scripts": {
+		"dev": "ts-node-dev -r tsconfig-paths/register index.ts",
+		"lint": "prettier --check 'src/**/*'",
+		"lint:fix": "prettier --write 'src/**/*'"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/FyreNodes/Jarvis.git"
+	},
+	"author": "Liam L <TheFallenSpirit>",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/FyreNodes/Jarvis/issues"
+	},
+	"homepage": "https://github.com/FyreNodes/Jarvis#readme",
+	"dependencies": {
+		"axios": "^0.26.1",
+		"discord.js": "^13.6.0"
+	},
+	"devDependencies": {
+		"@types/node": "^17.0.26",
+		"prettier": "2.6.2",
+		"ts-node-dev": "^1.1.8",
+		"tsconfig-paths": "^3.14.1",
+		"typescript": "^4.6.3"
+	}
+}

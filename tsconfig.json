@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "lib": [
+            "ES6"
+        ],
+        "esModuleInterop": true,
+        "target": "ES6",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "outDir": "dist",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@config": ["./src/utils/config.ts"]
+        },
+        "typeRoots": [
+            "node_modules/@types"
+        ],      
+    },
+    "exclude": [
+        "/node_modules/"
+    ]
+}
