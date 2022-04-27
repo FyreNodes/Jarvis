@@ -1,11 +1,11 @@
-import { ApplicationCommand, BasicCommandInfo, BasicCommandRun } from "@/Interfaces";
+import { SlashCommand, CommandInfo, CommandRun } from "@/Interfaces";
 import axios, { AxiosResponse } from 'axios';
 import { Message } from "discord.js";
 
-export const run: BasicCommandRun = (client, message, args) => {
+export const run: CommandRun = (client, message, args) => {
     message.channel.send('Updating... This process may take up to 15 seconds to complete.').then(async (msg: Message) => {
         const responces: number[] = [];
-        client.applicationCommands.forEach(async (data: ApplicationCommand) => {
+        client.applicationCommands.forEach(async (data: SlashCommand) => {
             const JSONdata = JSON.parse(JSON.stringify(data.info));
             await axios({
                 method: 'POST',
@@ -31,7 +31,7 @@ export const run: BasicCommandRun = (client, message, args) => {
     });
 };
 
-export const info: BasicCommandInfo = {
+export const info: CommandInfo = {
     name: 'update',
     category: 'admin',
     permissions: ["ADMINISTRATOR"]

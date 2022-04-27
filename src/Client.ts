@@ -1,17 +1,17 @@
 import { Client as DiscordClient, Collection } from 'discord.js';
-import { BasicCommand, ApplicationCommand } from '@/Interfaces';
-import { applicationCommandHandler, basicCommandHandler, eventHandler } from '@/Handlers';
-import connect from './database/connect';
+import { Command, SlashCommand } from '@/Interfaces';
+import { commandHandler, slashCommandHandler, eventHandler } from '@/Handlers';
+import connect from '@/database/connect';
 
 export default class Client extends DiscordClient
 {
-    public basicCommands: Collection<string, BasicCommand> = new Collection();
-    public applicationCommands: Collection<string, ApplicationCommand> = new Collection();
+    public commands: Collection<string, Command> = new Collection();
+    public slashCommands: Collection<string, SlashCommand> = new Collection();
 
     public init() {
         eventHandler(this);
-        basicCommandHandler(this);
-        applicationCommandHandler(this);
+        commandHandler(this);
+        slashCommandHandler(this);
         connect();
         this.login(process.env.TOKEN);
     };

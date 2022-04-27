@@ -1,3 +1,2 @@
-export { BasicCommand, BasicCommandRun, BasicCommandInfo } from '@/interfaces/BasicCommand';
-export { ApplicationCommand, ApplicationCommandRun, ApplicationCommandInfo } from '@/interfaces/ApplicationCommand';
-export { Config } from '@/interfaces/Config';
+export { Command, CommandRun, CommandInfo } from '@/interfaces/Command';
+export { SlashCommand, SlashCommandRun, SlashCommandInfo } from '@/interfaces/SlashCommand';

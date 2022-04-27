@@ -1,7 +1,7 @@
-import { BasicCommandRun, BasicCommandInfo } from "@/Interfaces";
+import { CommandRun, CommandInfo } from "@/Interfaces";
 import config from "@/database/schemas/config";
 
-export const run: BasicCommandRun = async (client, message, args) => {
+export const run: CommandRun = async (client, message, args) => {
     if (!args[0]) return message.reply({ content: 'You did not specify the status type!' });
     if (!args[1]) return message.reply({ content: 'You did not specify the status message or url!' });
 
@@ -41,7 +41,7 @@ export const run: BasicCommandRun = async (client, message, args) => {
     };
 };
 
-export const info: BasicCommandInfo = {
+export const info: CommandInfo = {
     name: 'status',
     category: 'admin',
     permissions: ["ADMINISTRATOR"]

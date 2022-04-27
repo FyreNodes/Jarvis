@@ -1,3 +1,3 @@
-export { basicCommandHandler } from '@/handlers/basicCommand';
-export { applicationCommandHandler } from '@/handlers/applicationCommand';
+export { commandHandler } from '@/handlers/command';
+export { slashCommandHandler } from '@/handlers/slashCommand';
 export { eventHandler } from '@/handlers/event';

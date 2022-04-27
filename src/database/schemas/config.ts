@@ -1,7 +1,7 @@
 import { Schema, SchemaTypes, model } from 'mongoose';
 import { ConfigInterface } from '@/interfaces/schemas/Config';
 
-const ConfigSchema = new Schema({
+const ConfigSchema: Schema = new Schema({
     guildID: {
         type: SchemaTypes.String,
         required: true
