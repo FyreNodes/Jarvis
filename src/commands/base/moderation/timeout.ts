@@ -17,22 +17,41 @@ export const run: CommandRun = async (client, message, args) => {
 		title: 'You have been timed-out in FyreNodes.',
 		thumbnail: { url: message.guild.iconURL() },
 		color: '#FA8A29',
-		description: `**ID:** ${infID}\n**Reason:** ${reason.replace('-s', '')}\n**Duration:** ${ms(ms(time), {
-			long: true
-		})}\n${message.content.includes('-s') ? '' : `**Moderator:** ${moderator.user.tag} (<@${moderator.id}>)`}`,
-		footer: { text: 'Moderation • Jarvis', iconURL: client.user.avatarURL() },
+		description: `**ID:** ${infID}\n**Reason:** ${reason.replace('-s', '')}\n**Duration:** ${ms(ms(time), { long: true })}\n${message.content.includes('-s') ? '' : `**Moderator:** ${moderator.user.tag} (<@${moderator.id}>)`}`,
+		footer: {
+			text: 'Moderation • Jarvis',
+			iconURL: client.user.avatarURL()
+		},
 		timestamp: Date.now()
 	});
 	let logsEmbed = new MessageEmbed({
-		author: { name: `Infraction | Timeout | ${infID}`, iconURL: member.user.avatarURL() },
+		author: {
+			name: `Infraction | Timeout | ${infID}`,
+			iconURL: member.user.avatarURL()
+		},
 		color: '#FA8A29',
 		fields: [
-			{ name: 'User:', value: `${member.user.tag} (<@${member.id}>)`, inline: true },
-			{ name: 'Moderator:', value: `${moderator.user.tag} (<@${moderator.id}>)`, inline: true },
-			{ name: 'Duration:', value: ms(ms(time), { long: true }), inline: true },
+			{
+				name: 'User:',
+				value: `${member.user.tag} (<@${member.id}>)`,
+				inline: true
+			},
+			{
+				name: 'Moderator:',
+				value: `${moderator.user.tag} (<@${moderator.id}>)`,
+				inline: true
+			},
+			{
+				name: 'Duration:',
+				value: ms(ms(time), { long: true }),
+				inline: true
+			},
 			{ name: 'Reason:', value: reason, inline: false }
 		],
-		footer: { text: 'Moderation • Jarvis', iconURL: client.user.avatarURL() },
+		footer: {
+			text: 'Moderation • Jarvis',
+			iconURL: client.user.avatarURL()
+		},
 		timestamp: Date.now()
 	});
 	await member.timeout(ms(time), `Moderator: ${moderator.user.tag}; Reason: ${reason}`);
@@ -41,7 +60,11 @@ export const run: CommandRun = async (client, message, args) => {
 		guild: message.guild.id,
 		type: 'Timeout',
 		user: member.id,
-		details: { reason: reason, moderator: moderator.id, duration: ms(ms(time), { long: true }) }
+		details: {
+			reason: reason,
+			moderator: moderator.id,
+			duration: ms(ms(time), { long: true })
+		}
 	});
 	await member.send({ embeds: [userEmbed] }).catch(() => {});
 	await (message.guild.channels.cache.get('968665856919888002') as TextChannel).send({ embeds: [logsEmbed] });

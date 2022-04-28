@@ -14,21 +14,36 @@ export const run: CommandRun = async (client, message, args) => {
 		title: 'You have been warned in FyreNodes.',
 		thumbnail: { url: message.guild.iconURL() },
 		color: '#FAF333',
-		description: `**ID:** ${infID}\n**Reason:** ${reason.replace('-s', '')}\n${
-			message.content.includes('-s') ? '' : `**Moderator:** ${moderator.user.tag} (<@${moderator.id}>)`
-		}`,
-		footer: { text: 'Moderation • Jarvis', iconURL: client.user.avatarURL() },
+		description: `**ID:** ${infID}\n**Reason:** ${reason.replace('-s', '')}\n${message.content.includes('-s') ? '' : `**Moderator:** ${moderator.user.tag} (<@${moderator.id}>)`}`,
+		footer: {
+			text: 'Moderation • Jarvis',
+			iconURL: client.user.avatarURL()
+		},
 		timestamp: Date.now()
 	});
 	let logsEmbed = new MessageEmbed({
-		author: { name: `Infraction | Warn | ${infID}`, iconURL: member.user.avatarURL() },
+		author: {
+			name: `Infraction | Warn | ${infID}`,
+			iconURL: member.user.avatarURL()
+		},
 		color: '#FAF333',
 		fields: [
-			{ name: 'User:', value: `${member.user.tag} (<@${member.id}>)`, inline: true },
-			{ name: 'Moderator:', value: `${moderator.user.tag} (<@${moderator.id}>)`, inline: true },
+			{
+				name: 'User:',
+				value: `${member.user.tag} (<@${member.id}>)`,
+				inline: true
+			},
+			{
+				name: 'Moderator:',
+				value: `${moderator.user.tag} (<@${moderator.id}>)`,
+				inline: true
+			},
 			{ name: 'Reason:', value: reason, inline: false }
 		],
-		footer: { text: 'Moderation • Jarvis', iconURL: client.user.avatarURL() },
+		footer: {
+			text: 'Moderation • Jarvis',
+			iconURL: client.user.avatarURL()
+		},
 		timestamp: Date.now()
 	});
 	await infraction.create({

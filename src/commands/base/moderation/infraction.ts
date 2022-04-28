@@ -10,19 +10,21 @@ export const run: CommandRun = async (client, message, args) => {
 			let viewInf = await infraction.find({ user: member.id });
 			if (!viewInf.length) return message.channel.send({ content: `${member.user.tag} has no infractions.` });
 			let viewEmbed = new MessageEmbed({
-				author: { name: `Infraction's | ${member.user.tag}`, iconURL: member.user.avatarURL() },
+				author: {
+					name: `Infraction's | ${member.user.tag}`,
+					iconURL: member.user.avatarURL()
+				},
 				color: '#1AB6DC',
 				description: viewInf
 					.map((data) => {
-						return `**ID:** ${data.infID} **|** Moderator: ${
-							message.guild.members.cache.get(data.details.moderator).user.tag
-						} **|** Reason: ${data.details.reason} ${
-							data.details.duration ? `**|** Duration: ${data.details.duration}` : ``
-						}`;
+						return `**ID:** ${data.infID} **|** Moderator: ${message.guild.members.cache.get(data.details.moderator).user.tag} **|** Reason: ${data.details.reason} ${data.details.duration ? `**|** Duration: ${data.details.duration}` : ``}`;
 					})
 					.join('\n'),
 				thumbnail: { url: member.user.avatarURL() },
-				footer: { text: 'Moderation • Jarvis', iconURL: client.user.avatarURL() },
+				footer: {
+					text: 'Moderation • Jarvis',
+					iconURL: client.user.avatarURL()
+				},
 				timestamp: Date.now()
 			});
 			message.channel.send({ embeds: [viewEmbed] });
@@ -30,17 +32,14 @@ export const run: CommandRun = async (client, message, args) => {
 
 		case 'del':
 		case 'delete':
-			if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
-				return message.reply({ content: 'You do not have permission!' });
-			if (!(await infraction.exists({ infID: args[2] })))
-				return message.reply({ content: 'That infraction does not exist!' });
+			if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS)) return message.reply({ content: 'You do not have permission!' });
+			if (!(await infraction.exists({ infID: args[2] }))) return message.reply({ content: 'That infraction does not exist!' });
 			await infraction.deleteOne({ infID: args[2] });
 			message.channel.send({ content: 'Successfully deleted infraction.' });
 			break;
 
 		case 'clear':
-			if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS))
-				return message.reply({ content: 'You do not have permission!' });
+			if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return message.reply({ content: 'You do not have permission!' });
 			await infraction.deleteMany({ user: member.id });
 			message.channel.send({ content: 'Successfully cleared infractions.' });
 			break;
