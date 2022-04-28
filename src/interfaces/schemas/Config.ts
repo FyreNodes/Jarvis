@@ -1,9 +1,9 @@
 export interface ConfigInterface {
-    guildID: string;
-    prefix: string;
-    status: {
-        type: string;
-        msg: string;
-        url?: string;
-    };
-};
+	guildID: string;
+	prefix: string;
+	status: {
+		type: string;
+		msg: string;
+		url?: string;
+	};
+}
