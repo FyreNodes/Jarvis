@@ -11,7 +11,7 @@ export default async (client: Client, message: Message) => {
     const args: string[] = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd: string = args.shift().toLowerCase();
     if (cmd.length == 0) return;
-    const command: Command = client.basicCommands.get(cmd);
+    const command: Command = client.commands.get(cmd);
     if (!command) return;
     if (!command.info.permissions) command.run(client, message, args);
     let user_perms = [];

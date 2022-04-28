@@ -5,7 +5,7 @@ import { Message } from "discord.js";
 export const run: CommandRun = (client, message, args) => {
     message.channel.send('Updating... This process may take up to 15 seconds to complete.').then(async (msg: Message) => {
         const responces: number[] = [];
-        client.applicationCommands.forEach(async (data: SlashCommand) => {
+        client.slashCommands.forEach(async (data: SlashCommand) => {
             const JSONdata = JSON.parse(JSON.stringify(data.info));
             await axios({
                 method: 'POST',
