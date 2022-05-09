@@ -13,7 +13,7 @@ export default async (client: Client, message: Message) => {
 	if (cmd.length == 0) return;
 	const command: Command = client.commands.get(cmd);
 	if (!command) return;
-	if (!command.info.permissions) command.run(client, message, args);
+	if (!command.info.permissions) return command.run(client, message, args);
 	let user_perms = [];
 	await command.info.permissions.forEach((perm) => {
 		if (message.member.permissions.has(perm, true)) user_perms.push(true);
