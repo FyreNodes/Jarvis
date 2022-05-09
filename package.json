@@ -8,7 +8,7 @@
 		"node": ">=16.6.0"
 	},
 	"scripts": {
-		"start": "tsc --build; tsc-alias -p tsconfig.json; node -r tsconfig-paths/register -r dotenv/config dist/index.js",
+		"start": "tsc --build; tsc-alias -p tsconfig.json; node -r dotenv/config dist/index.js",
 		"dev": "ts-node-dev -r tsconfig-paths/register -r dotenv/config index.ts",
 		"lint": "prettier --check 'src/**/*'",
 		"lint:fix": "prettier --write src/**/*"
@@ -29,13 +29,13 @@
 		"dotenv": "^16.0.0",
 		"eslint": "^8.14.0",
 		"mongoose": "^6.3.1",
-		"ms": "^2.1.3"
+		"ms": "^2.1.3",
+		"tsc-alias": "^1.6.7"
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.26",
 		"prettier": "2.6.2",
 		"ts-node-dev": "^1.1.8",
-		"tsc-alias": "^1.6.7",
 		"tsconfig-paths": "^3.14.1",
 		"typescript": "^4.6.3"
 	}
