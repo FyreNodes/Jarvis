@@ -1,10 +1,10 @@
-import Client from "@/Client";
-import { Interaction } from "@/Interfaces";
-import { readdirSync } from "fs";
+import Client from '@/Client';
+import { Interaction } from '@/Interfaces';
+import { readdirSync } from 'fs';
 import commandInteraction from '@/handlers/interactions/commandInteraction';
 
 export const interactionHandler = async (client: Client) => {
-    const path: string = `${__dirname}/../interactions`;
+	const path: string = `${__dirname}/../interactions`;
 	await readdirSync(path).forEach(async (type: string) => {
 		await readdirSync(`${path}/${type}`).forEach(async (dir: string) => {
 			const interactions: string[] = await readdirSync(`${path}/${type}/${dir}`).filter((file: string) => file.endsWith('.ts') || file.endsWith('.js'));
@@ -13,11 +13,11 @@ export const interactionHandler = async (client: Client) => {
 				switch (int.info.intType) {
 					case 'command':
 						commandInteraction(client, int);
-					break;
+						break;
 
 					default:
 						return;
-					break;
+						break;
 				}
 			}
 		});

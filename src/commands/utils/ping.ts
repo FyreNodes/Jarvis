@@ -7,7 +7,7 @@ export const run: CommandRun = (client, message, args) => {
 		title: 'System Ping',
 		color: '#1AB6DC',
 		description: `⏳️ App: ${appPing}ms\n💓 WS: ${client.ws.ping}ms\n⚙ Gen: ${(appPing + client.ws.ping) / 2}ms`,
-		footer: {text: 'Jarvis • Utility', iconURL: client.user.avatarURL()},
+		footer: { text: 'Jarvis • Utility', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
 	message.channel.send({ embeds: [embed] });
