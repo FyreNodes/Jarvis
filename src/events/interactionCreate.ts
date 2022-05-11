@@ -1,11 +1,8 @@
 import Client from '@/Client';
-import { SlashCommand } from '@/Interfaces';
-import { CommandInteraction } from 'discord.js';
+import { Interaction } from 'discord.js';
+import commandInteraction from './interactions/commandInteraction';
 
-export default (client: Client, interaction: CommandInteraction) => {
-	if (!interaction.isCommand()) return;
-	const cmd: string = interaction.commandName.toString().toLowerCase();
-	const command: SlashCommand = client.slashCommands.get(cmd);
-	if (!command) return;
-	command.run(client, interaction);
+export default (client: Client, interaction: Interaction) => {
+	if (interaction.isCommand()) return commandInteraction(client, interaction);
+	if (interaction.isButton()) return console.log(`button pressed ${interaction.customId}`);
 };

@@ -1,15 +1,16 @@
-import { SlashCommand, CommandInfo, CommandRun } from '@/Interfaces';
+import { Interaction, CommandInfo, CommandRun } from '@/Interfaces';
 import axios, { AxiosResponse } from 'axios';
 import { Message } from 'discord.js';
 
 export const run: CommandRun = (client, message, args) => {
 	message.channel.send({ content: 'Updating... This process may take up to 15 seconds to complete.' }).then(async (msg: Message) => {
 		const responces: number[] = [];
-		client.slashCommands.forEach(async (data: SlashCommand) => {
+		client.interactions.forEach(async (data: Interaction) => {
+			if (data.info.intType !== 'command') return;
 			const JSONdata = JSON.parse(JSON.stringify(data.info));
 			await axios({
 				method: 'POST',
-				url: `https://discord.com/api/v9/applications/805565109992685580/commands`,
+				url: `https://discord.com/api/v9/applications/852239354189054002/commands`,
 				headers: {
 					Authorization: `Bot ${process.env.TOKEN}`,
 					'Content-Type': 'application/json'

@@ -1,7 +1,7 @@
-import { SlashCommandInfo, SlashCommandRun } from '@/Interfaces';
+import { InteractionInfo, InteractionRun } from '@/Interfaces';
 import { MessageEmbed } from 'discord.js';
 
-export const run: SlashCommandRun = async (client, interaction) => {
+export const run: InteractionRun = async (client, interaction) => {
 	const appPing = Date.now() - interaction.createdTimestamp;
 	let embed = new MessageEmbed({
 		title: 'System Ping',
@@ -13,8 +13,9 @@ export const run: SlashCommandRun = async (client, interaction) => {
 	interaction.reply({ embeds: [embed] });
 };
 
-export const info: SlashCommandInfo = {
+export const info: InteractionInfo = {
 	name: 'ping',
 	description: 'Shows the bots current ping.',
-	category: 'utils'
+	category: 'utils',
+	intType: 'command'
 };

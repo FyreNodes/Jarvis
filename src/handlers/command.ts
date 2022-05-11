@@ -3,7 +3,7 @@ import { Command } from '@/Interfaces';
 import { readdirSync } from 'fs';
 
 export const commandHandler = async (client: Client) => {
-	const path: string = `${__dirname}/../commands/base`;
+	const path: string = `${__dirname}/../commands`;
 	await readdirSync(path).forEach(async (dir: string) => {
 		const commands: string[] = readdirSync(`${path}/${dir}`).filter((file: string) => file.endsWith('.ts') || file.endsWith('js'));
 		for (const cmd of commands) {

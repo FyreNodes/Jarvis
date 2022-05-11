@@ -1,3 +1,3 @@
 export { commandHandler } from '@/handlers/command';
-export { slashCommandHandler } from '@/handlers/slashCommand';
+export { interactionHandler } from '@/handlers/interaction';
 export { eventHandler } from '@/handlers/event';
