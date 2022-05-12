@@ -16,7 +16,7 @@ export const run: CommandRun = async (client, message, args) => {
 		color: '#FAF333',
 		description: `**ID:** ${infID}\n**Reason:** ${reason.replace('-s', '')}\n${message.content.includes('-s') ? '' : `**Moderator:** ${moderator.user.tag} (<@${moderator.id}>)`}`,
 		footer: {
-			text: 'Moderation • Jarvis',
+			text: 'Jarvis Moderation',
 			iconURL: client.user.avatarURL()
 		},
 		timestamp: Date.now()
@@ -41,7 +41,7 @@ export const run: CommandRun = async (client, message, args) => {
 			{ name: 'Reason:', value: reason, inline: false }
 		],
 		footer: {
-			text: 'Moderation • Jarvis',
+			text: 'Jarvis Moderation',
 			iconURL: client.user.avatarURL()
 		},
 		timestamp: Date.now()

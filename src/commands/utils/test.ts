@@ -5,7 +5,7 @@ export const run: CommandRun = async (client, message, args) => {
 	let testrow = new MessageActionRow({
 		components: [
 			new MessageButton({
-				customId: 'test',
+				customId: 'button:test',
 				label: 'Test',
 				style: 'PRIMARY'
 			})

@@ -22,7 +22,7 @@ export const run: CommandRun = async (client, message, args) => {
 					.join('\n'),
 				thumbnail: { url: member.user.avatarURL() },
 				footer: {
-					text: 'Moderation • Jarvis',
+					text: 'Jarvis Moderation',
 					iconURL: client.user.avatarURL()
 				},
 				timestamp: Date.now()

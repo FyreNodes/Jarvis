@@ -1,5 +1,4 @@
 import Client from '@/Client';
-import { CommandInteraction } from 'discord.js';
 
 export interface Interaction {
 	info: InteractionInfo;
@@ -7,7 +6,7 @@ export interface Interaction {
 }
 
 export interface InteractionRun {
-	(client: Client, interaction: CommandInteraction);
+	(client: Client, interaction);
 }
 
 export interface InteractionInfo {
