@@ -1,6 +1,7 @@
 import Client from '@/Client';
 import { Command } from '@/Interfaces';
 import { readdirSync } from 'fs';
+import { grey, green, white } from 'chalk';
 
 export const commandHandler = async (client: Client) => {
 	const path: string = `${__dirname}/../commands`;
@@ -11,4 +12,5 @@ export const commandHandler = async (client: Client) => {
 			await client.commands.set(command.info.name, command);
 		}
 	});
+	console.log(`${grey.bold('[')}${green.bold('HANDLER')}${grey.bold(']')} ${white('All commands have been loaded.')}`);
 };

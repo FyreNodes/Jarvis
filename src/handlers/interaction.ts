@@ -1,6 +1,7 @@
 import Client from '@/Client';
 import { Interaction } from '@/Interfaces';
 import { readdirSync } from 'fs';
+import { grey, green, white } from 'chalk';
 
 export const interactionHandler = async (client: Client) => {
 	const path: string = `${__dirname}/../interactions`;
@@ -13,4 +14,5 @@ export const interactionHandler = async (client: Client) => {
 			}
 		});
 	});
+	console.log(`${grey.bold('[')}${green.bold('HANDLER')}${grey.bold(']')} ${white('All interactions have been loaded.')}`);
 };
