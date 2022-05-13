@@ -1,5 +1,5 @@
 import { connect } from 'mongoose';
 
-connect(process.env.DB);
+connect(process.env.MONGO_URL);
 
 export default () => {};

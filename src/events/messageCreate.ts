@@ -1,10 +1,12 @@
 import Client from '@/Client';
 import botConfig from '@/database/schemas/config';
 import { Command } from '@/Interfaces';
+import transcripter from '@/lib/transcripter';
 import { Message } from 'discord.js';
 
 export default async (client: Client, message: Message) => {
 	if (message.author.bot || !message.guild) return;
+	await transcripter(client, message);
 	if (!(await botConfig.exists({ guildID: message.guild.id, botID: client.user.id }))) await botConfig.create({ guildID: message.guild.id, botID: client.user.id, prefix: '.' });
 	const cfg = await botConfig.findOne({ guildID: message.guild.id, botID: client.user.id });
 	const prefix: string = await cfg.get('prefix');

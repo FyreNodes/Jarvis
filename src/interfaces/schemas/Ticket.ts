@@ -3,4 +3,5 @@ export interface TicketInterface {
     guild: string;
     user: string;
     channel: string;
+    status: 'open' | 'closed';
 }

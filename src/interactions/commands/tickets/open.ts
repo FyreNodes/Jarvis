@@ -4,7 +4,7 @@ import gen from '@/utils/gen';
 import { CommandInteraction, MessageEmbed, Permissions } from 'discord.js';
 
 export const run: InteractionRun = async (client, interaction: CommandInteraction) => {
-	if (await ticket.exists({ guild: interaction.guild.id, user: interaction.user.id })) return interaction.reply({ content: 'You already have an open ticket.', ephemeral: true });
+	if (await ticket.exists({ guild: interaction.guild.id, user: interaction.user.id, status: 'open' })) return interaction.reply({ content: 'You already have an open ticket.', ephemeral: true });
 	const id = await gen('id', 6);
 	const ch = await interaction.guild.channels.create(`${interaction.options.get('department').value}-${interaction.user.username}`, {
 		type: 'GUILD_TEXT',
@@ -75,7 +75,7 @@ export const run: InteractionRun = async (client, interaction: CommandInteractio
 		footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	await ticket.create({ guild: interaction.guild.id, user: interaction.user.id, channel: ch.id, ticketID: id });
+	await ticket.create({ guild: interaction.guild.id, user: interaction.user.id, channel: ch.id, ticketID: id, status: 'open' });
 	await ch.send({ content: `<@!${interaction.user.id}>` }).then(async (msg) => await msg.delete());
 	await ch.send({ embeds: [embed] }).then(async (msg) => await msg.pin());
 	interaction.reply({ content: `Ticket has been created. <#${ch.id}>` });
