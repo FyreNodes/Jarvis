@@ -10,7 +10,7 @@ export const interactionHandler = async (client: Client) => {
 			for (let interaction of interactions) {
 				const int: Interaction = require(`${path}/${type}/${dir}/${interaction}`);
 				await client.interactions.set(int.info.name, int);
-			};
+			}
 		});
 	});
 };

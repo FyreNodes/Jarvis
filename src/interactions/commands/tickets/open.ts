@@ -16,16 +16,7 @@ export const run: InteractionRun = async (client, interaction: CommandInteractio
 			{
 				id: '961173678249357336',
 				type: 'role',
-				allow: [
-					Permissions.FLAGS.VIEW_CHANNEL,
-					Permissions.FLAGS.SEND_MESSAGES,
-					Permissions.FLAGS.ATTACH_FILES,
-					Permissions.FLAGS.EMBED_LINKS,
-					Permissions.FLAGS.ADD_REACTIONS,
-					Permissions.FLAGS.READ_MESSAGE_HISTORY,
-					Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
-					Permissions.FLAGS.USE_EXTERNAL_STICKERS
-				]
+				allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.ATTACH_FILES, Permissions.FLAGS.EMBED_LINKS, Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.READ_MESSAGE_HISTORY, Permissions.FLAGS.USE_EXTERNAL_EMOJIS, Permissions.FLAGS.USE_EXTERNAL_STICKERS]
 			},
 			{
 				id: '961172814063337523',
@@ -46,16 +37,7 @@ export const run: InteractionRun = async (client, interaction: CommandInteractio
 			{
 				id: interaction.user.id,
 				type: 'member',
-				allow: [
-					Permissions.FLAGS.VIEW_CHANNEL,
-					Permissions.FLAGS.SEND_MESSAGES,
-					Permissions.FLAGS.ATTACH_FILES,
-					Permissions.FLAGS.EMBED_LINKS,
-					Permissions.FLAGS.ADD_REACTIONS,
-					Permissions.FLAGS.READ_MESSAGE_HISTORY,
-					Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
-					Permissions.FLAGS.USE_EXTERNAL_STICKERS
-				]
+				allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.ATTACH_FILES, Permissions.FLAGS.EMBED_LINKS, Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.READ_MESSAGE_HISTORY, Permissions.FLAGS.USE_EXTERNAL_EMOJIS, Permissions.FLAGS.USE_EXTERNAL_STICKERS]
 			},
 			{
 				id: interaction.guild.roles.everyone,
