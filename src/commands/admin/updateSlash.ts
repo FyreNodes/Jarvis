@@ -19,6 +19,9 @@ export const run: CommandRun = (client, message, args) => {
 			}).then(async (responce: AxiosResponse) => {
 				responces.push(responce.status);
 				console.log(responce.data);
+			}).catch(err => {
+				console.log();
+				return message.channel.send({ content: `An error occured:\n\`\`\`txt\n${err}\n\`\`\`` });
 			});
 		});
 		setTimeout(() => {

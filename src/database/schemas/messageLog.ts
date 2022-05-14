@@ -1,16 +1,12 @@
-import { TicketInterface } from '@/interfaces/schemas/Ticket';
 import { Schema, SchemaTypes, model } from 'mongoose';
+import { MessageLogInterface } from '@/interfaces/schemas/MessageLog';
 
-const TicketSchema: Schema = new Schema({
-	ticketID: {
-		type: SchemaTypes.Number,
-		required: true
-	},
+const MessageLogSchema: Schema = new Schema({
 	guild: {
 		type: SchemaTypes.String,
 		required: true
 	},
-	user: {
+	message: {
 		type: SchemaTypes.String,
 		required: true
 	},
@@ -18,14 +14,14 @@ const TicketSchema: Schema = new Schema({
 		type: SchemaTypes.String,
 		required: true
 	},
-	status: {
+	author: {
 		type: SchemaTypes.String,
 		required: true
 	},
-	department: {
+	messageID: {
 		type: SchemaTypes.String,
-		required: true
+		required: false
 	}
 });
 
-export default model<TicketInterface>('tickets', TicketSchema);
+export default model<MessageLogInterface>('messageLogs', MessageLogSchema);

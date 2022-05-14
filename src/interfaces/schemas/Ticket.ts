@@ -4,4 +4,5 @@ export interface TicketInterface {
 	user: string;
 	channel: string;
 	status: 'open' | 'closed';
+	department: string;
 }

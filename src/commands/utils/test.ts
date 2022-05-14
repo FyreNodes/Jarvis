@@ -1,17 +1,8 @@
 import { CommandInfo, CommandRun } from '@/Interfaces';
-import { MessageActionRow, MessageButton } from 'discord.js';
+import { MessageActionRow, Modal, TextInputComponent } from 'discord.js';
 
 export const run: CommandRun = async (client, message, args) => {
-	let testrow = new MessageActionRow({
-		components: [
-			new MessageButton({
-				customId: 'button:test',
-				label: 'Test',
-				style: 'PRIMARY'
-			})
-		]
-	});
-	message.channel.send({ components: [testrow] });
+	
 };
 
 export const info: CommandInfo = {

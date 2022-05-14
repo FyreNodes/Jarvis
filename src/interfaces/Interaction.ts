@@ -16,7 +16,7 @@ export interface InteractionInfo {
 	intType: 'command' | 'button' | 'submit';
 	type?: number;
 	options?: Options[];
-	default_permission?: boolean;
+	default_member_permissions?: number;
 }
 
 interface Options {

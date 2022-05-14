@@ -1,7 +1,7 @@
 import ticket from '@/database/schemas/ticket';
 import { InteractionInfo, InteractionRun } from '@/Interfaces';
 import gen from '@/utils/gen';
-import { CommandInteraction, MessageEmbed, Permissions } from 'discord.js';
+import { CommandInteraction, MessageActionRow, MessageButton, MessageEmbed, Permissions } from 'discord.js';
 
 export const run: InteractionRun = async (client, interaction: CommandInteraction) => {
 	if (await ticket.exists({ guild: interaction.guild.id, user: interaction.user.id, status: 'open' })) return interaction.reply({ content: 'You already have an open ticket.', ephemeral: true });
@@ -57,10 +57,12 @@ export const run: InteractionRun = async (client, interaction: CommandInteractio
 		footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	await ticket.create({ guild: interaction.guild.id, user: interaction.user.id, channel: ch.id, ticketID: id, status: 'open' });
-	await ch.send({ content: `<@!${interaction.user.id}>` }).then(async (msg) => await msg.delete());
-	await ch.send({ embeds: [embed] }).then(async (msg) => await msg.pin());
-	interaction.reply({ content: `Ticket has been created. <#${ch.id}>` });
+	let closeButton: MessageButton = new MessageButton({ customId: 'button.ticket.close', label: 'Close', emoji: '🔒', style: 'DANGER' });
+	let actionRow = new MessageActionRow({ components: [closeButton] });
+	await ticket.create({ guild: interaction.guild.id, user: interaction.user.id, channel: ch.id, ticketID: id, status: 'open', department: interaction.options.getString('department') });
+	await interaction.reply({ content: `Ticket has been created. <#${ch.id}>` });
+	ch.send({ content: `<@!${interaction.user.id}>` }).then(async (msg) => await msg.delete());
+	ch.send({ embeds: [embed], components: [actionRow] }).then((msg) => msg.pin());
 };
 
 export const info: InteractionInfo = {

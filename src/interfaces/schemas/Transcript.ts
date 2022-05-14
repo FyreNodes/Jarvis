@@ -1,7 +1,5 @@
-export interface TranscriptInterface {
-	guild: string;
-	message: string;
-	channel: string;
-	author: string;
-	messageID: string;
+export default interface TranscriptInterface {
+    guild: string;
+    transcript: string[];
+    ticketID: number;
 }

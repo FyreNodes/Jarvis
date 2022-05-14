@@ -2,14 +2,14 @@ import { Client as DiscordClient, Collection } from 'discord.js';
 import { Command, Interaction } from '@/Interfaces';
 import { commandHandler, interactionHandler, eventHandler } from '@/Handlers';
 import connect from '@/database/connect';
-import transcriptsDir from '@/helpers/transcriptsDir';
+import transcripts from '@/helpers/transcripts';
 
 export default class Client extends DiscordClient {
 	public commands: Collection<string, Command> = new Collection();
 	public interactions: Collection<string, Interaction> = new Collection();
 
 	public async init() {
-		await transcriptsDir();
+		await transcripts();
 		eventHandler(this);
 		commandHandler(this);
 		interactionHandler(this);
