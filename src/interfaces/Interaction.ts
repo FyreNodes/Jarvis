@@ -24,6 +24,8 @@ interface Options {
 	name: string;
 	description: string;
 	required?: boolean;
+	min_value?: number;
+	max_value?: number;
 	autocomplete?: boolean;
 	choices?: Choices[];
 }
