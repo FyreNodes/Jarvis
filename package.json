@@ -2,7 +2,7 @@
 	"name": "jarvis",
 	"packageManager": "yarn@3.2.0",
 	"description": "Multipurpose bot for FyreNodes Discord server.",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"main": "index.ts",
 	"engines": {
 		"node": ">=16.6.0"
