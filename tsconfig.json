@@ -8,6 +8,7 @@
         "sourceMap": true,
         "removeComments": true,
         "resolveJsonModule": true,
+        "skipLibCheck": true,
         "outDir": "dist",
         "baseUrl": ".",
         "paths": {
