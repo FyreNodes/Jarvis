@@ -26,7 +26,7 @@
 	"dependencies": {
 		"axios": "^0.26.1",
 		"chalk": "4.1.2",
-		"discord.js": "latest",
+		"discord.js": "^13.7.0",
 		"dotenv": "^16.0.0",
 		"eslint": "^8.14.0",
 		"figlet": "^1.5.2",
