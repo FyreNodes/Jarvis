@@ -2,6 +2,10 @@ import { Schema, SchemaTypes, model } from 'mongoose';
 import { ConfigInterface } from '@/interfaces/schemas/Config';
 
 const ConfigSchema: Schema = new Schema({
+	botID: {
+		type: SchemaTypes.String,
+		required: true
+	},
 	guildID: {
 		type: SchemaTypes.String,
 		required: true
@@ -13,11 +17,11 @@ const ConfigSchema: Schema = new Schema({
 	status: {
 		type: {
 			type: SchemaTypes.String,
-			required: true
+			required: false
 		},
 		msg: {
 			type: SchemaTypes.String,
-			required: true
+			required: false
 		},
 		url: {
 			type: SchemaTypes.String,

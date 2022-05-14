@@ -17,12 +17,12 @@ export const run: CommandRun = async (client, message, args) => {
 				color: '#1AB6DC',
 				description: viewInf
 					.map((data) => {
-						return `**ID:** ${data.infID} **|** Moderator: ${message.guild.members.cache.get(data.details.moderator).user.tag} **|** Reason: ${data.details.reason} ${data.details.duration ? `**|** Duration: ${data.details.duration}` : ``}`;
+						return `**ID:** ${data.infID} | **Moderator:** ${message.guild.members.cache.get(data.details.moderator).user.tag} | **Reason:** ${data.details.reason} ${data.details.duration ? `| **Duration:** ${data.details.duration}` : ``}`;
 					})
 					.join('\n'),
 				thumbnail: { url: member.user.avatarURL() },
 				footer: {
-					text: 'Moderation • Jarvis',
+					text: 'Jarvis Moderation',
 					iconURL: client.user.avatarURL()
 				},
 				timestamp: Date.now()

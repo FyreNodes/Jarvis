@@ -1,14 +1,14 @@
 import Client from '@/Client';
-import { SlashCommand } from '@/Interfaces';
+import { Interaction } from '@/Interfaces';
 import { readdirSync } from 'fs';
 
-export const slashCommandHandler = async (client: Client) => {
-	const path: string = `${__dirname}/../commands/slash`;
+export const commandInteraction = async (client: Client) => {
+	const path: string = `${__dirname}/../interactions/commands`;
 	await readdirSync(path).forEach(async (dir: string) => {
 		const commands: string[] = readdirSync(`${path}/${dir}`).filter((file: string) => file.endsWith('.ts') || file.endsWith('.js'));
 		for (const cmd of commands) {
-			const command: SlashCommand = require(`${path}/${dir}/${cmd}`);
-			await client.slashCommands.set(command.info.name, command);
+			const command: Interaction = require(`${path}/${dir}/${cmd}`);
+			await client.interactions.set(command.info.name, command);
 		}
 	});
 };

@@ -1,11 +1,14 @@
 import Client from '@/Client';
 import botConfig from '@/database/schemas/config';
 import { Command } from '@/Interfaces';
+import messageLogger from '@/lib/messageLogger';
 import { Message } from 'discord.js';
 
 export default async (client: Client, message: Message) => {
 	if (message.author.bot || !message.guild) return;
-	const cfg = await botConfig.findOne({ guildID: message.guild.id });
+	await messageLogger(client, message);
+	if (!(await botConfig.exists({ guildID: message.guild.id, botID: client.user.id }))) await botConfig.create({ guildID: message.guild.id, botID: client.user.id, prefix: '.' });
+	const cfg = await botConfig.findOne({ guildID: message.guild.id, botID: client.user.id });
 	const prefix: string = await cfg.get('prefix');
 	if (!message.content.startsWith(prefix)) return;
 	const args: string[] = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -15,8 +18,9 @@ export default async (client: Client, message: Message) => {
 	if (!command) return;
 	if (!command.info.permissions) return command.run(client, message, args);
 	let user_perms = [];
-	await command.info.permissions.forEach((perm) => {
+	command.info.permissions.forEach((perm) => {
 		if (message.member.permissions.has(perm, true)) user_perms.push(true);
 	});
-	if (user_perms.includes(true)) command.run(client, message, args);
+	if (!user_perms.includes(true)) return message.reply('You do not have permission!');
+	command.run(client, message, args);
 };
