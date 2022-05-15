@@ -8,8 +8,8 @@
 		"node": ">=16.6.0"
 	},
 	"scripts": {
-		"start": "tsc --build; tsc-alias -p tsconfig.json; node -r dotenv/config dist/index.js",
-		"dev": "clear; ts-node-dev -r tsconfig-paths/register -r dotenv/config index.ts",
+		"start": "tsc --build; tsc-alias -p tsconfig.json; NODE_ENV=production node -r dotenv/config dist/index.js",
+		"dev": "clear; NODE_ENV=development ts-node-dev -r tsconfig-paths/register -r dotenv/config index.ts",
 		"lint": "prettier --check 'src/**/*'",
 		"lint:fix": "prettier --write src/**/*"
 	},
