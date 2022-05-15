@@ -1,56 +1,20 @@
 import { CommandRun, CommandInfo } from '@/Interfaces';
 import config from '@/database/schemas/config';
+import { ExcludeEnum, PresenceStatusData, ReactionUserManager } from 'discord.js';
+import { ActivityTypes } from 'discord.js/typings/enums';
 
 export const run: CommandRun = async (client, message, args) => {
 	if (!args[0]) return message.reply({ content: 'You did not specify the status type!' });
-	if (!args[1]) return message.reply({ content: 'You did not specify the status message or url!' });
-
-	switch (args[0]) {
-		case 'PLAYING':
-			const plName: string = message.content.split(' ').slice(2).join(' ');
-			client.user.setPresence({
-				status: 'online',
-				activities: [{ type: args[0], name: plName }]
-			});
-			await config.updateOne({ guildID: message.guild.id }, { status: { type: args[0], msg: plName } });
-			message.channel.send({ content: 'Status has been successfully set.' });
-			break;
-
-		case 'WATCHING':
-			const waName: string = message.content.split(' ').slice(2).join(' ');
-			client.user.setPresence({
-				status: 'online',
-				activities: [{ type: args[0], name: waName }]
-			});
-			await config.updateOne({ guildID: message.guild.id }, { status: { type: args[0], msg: waName } });
-			message.channel.send({ content: 'Status has been successfully set.' });
-			break;
-
-		case 'STREAMING':
-			const stName: string = message.content.split(' ').slice(3).join(' ');
-			if (!stName) return message.reply('You did not specify the status message!');
-			client.user.setPresence({
-				status: 'online',
-				activities: [{ type: args[0], name: stName, url: args[1] }]
-			});
-			await config.updateOne({ guildID: message.guild.id }, { status: { type: args[0], msg: stName, url: args[1] } });
-			message.channel.send({ content: 'Status has been successfully set.' });
-			break;
-
-		case 'LISTENING':
-			const liName: string = message.content.split(' ').slice(2).join(' ');
-			client.user.setPresence({
-				status: 'online',
-				activities: [{ type: args[0], name: liName }]
-			});
-			await config.updateOne({ guildID: message.guild.id }, { status: { type: args[0], msg: liName } });
-			message.channel.send({ content: 'Status has been successfully set.' });
-			break;
-
-		default:
-			return message.reply({ content: `Invalid status type specified! Data: ${args[0]}` });
-			break;
-	}
+	if (!args[1]) return message.reply({ content: 'You did not specify the activity type!' });
+	if (!args[2]) return message.reply({ content: 'You did not specify the activity name/url!' });
+	if (!['online', 'idle', 'dnd', 'invisible'].includes(args[0].toLowerCase())) return message.reply({ content: 'Invalid status type specified!' });
+	if (!['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING'].includes(args[1].toUpperCase())) return message.reply({ content: 'Invalid activity type specified!' });
+	const statusType = args[0] as PresenceStatusData;
+	const activityType = args[1] as ExcludeEnum<typeof ActivityTypes, "CUSTOM">
+	const activityName: string = args[1] === 'STREAMING' ? message.content.split(' ').slice(4).join(' ') : message.content.split(' ').slice(3).join(' ');
+	client.user.setPresence({ status: statusType, activities: [{ type: activityType, name: activityName, url: args[1] === 'STREAMING' ? args[2] : undefined }] });
+	await config.updateOne({ guildID: message.guild.id }, { status: { type: statusType, activity: { type: activityType ,name: activityName, url: args[1] === 'STREAMING' ? args[2] : undefined } } });
+	message.channel.send({ content: `Successfully updated status for ${client.user.username}` });
 };
 
 export const info: CommandInfo = {
