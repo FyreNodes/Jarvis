@@ -7,7 +7,6 @@ import { Message } from 'discord.js';
 export default async (client: Client, message: Message) => {
 	if (message.author.bot || !message.guild) return;
 	await messageLogger(client, message);
-	if (!(await botConfig.exists({ guildID: message.guild.id, botID: client.user.id }))) await botConfig.create({ guildID: message.guild.id, botID: client.user.id, prefix: '.' });
 	const cfg = await botConfig.findOne({ guildID: message.guild.id, botID: client.user.id });
 	if (!message.content.startsWith(cfg.prefix)) return;
 	const args: string[] = message.content.slice(cfg.prefix.length).trim().split(/ +/g);
