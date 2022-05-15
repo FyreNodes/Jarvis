@@ -9,9 +9,8 @@ export default async (client: Client, message: Message) => {
 	await messageLogger(client, message);
 	if (!(await botConfig.exists({ guildID: message.guild.id, botID: client.user.id }))) await botConfig.create({ guildID: message.guild.id, botID: client.user.id, prefix: '.' });
 	const cfg = await botConfig.findOne({ guildID: message.guild.id, botID: client.user.id });
-	const prefix: string = await cfg.get('prefix');
-	if (!message.content.startsWith(prefix)) return;
-	const args: string[] = message.content.slice(prefix.length).trim().split(/ +/g);
+	if (!message.content.startsWith(cfg.prefix)) return;
+	const args: string[] = message.content.slice(cfg.prefix.length).trim().split(/ +/g);
 	const cmd: string = args.shift().toLowerCase();
 	if (cmd.length == 0) return;
 	const command: Command = client.commands.get(cmd);
