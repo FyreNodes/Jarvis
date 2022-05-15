@@ -19,14 +19,20 @@ const ConfigSchema: Schema = new Schema({
 			type: SchemaTypes.String,
 			required: false
 		},
-		msg: {
-			type: SchemaTypes.String,
-			required: false
+		activity: {
+			type: {
+				type: SchemaTypes.String,
+				required: true
+			},
+			name: {
+				type: SchemaTypes.String,
+				required: true
+			},
+			url: {
+				type: SchemaTypes.String,
+				required: false
+			}
 		},
-		url: {
-			type: SchemaTypes.String,
-			required: false
-		}
 	}
 });
 

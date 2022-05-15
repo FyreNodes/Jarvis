@@ -1,4 +1,4 @@
-import { ExcludeEnum } from "discord.js";
+import { ExcludeEnum, PresenceStatusData } from "discord.js";
 import { ActivityTypes } from "discord.js/typings/enums";
 
 export interface ConfigInterface {
@@ -6,8 +6,11 @@ export interface ConfigInterface {
 	guildID: string;
 	prefix: string;
 	status: {
-		type?: ExcludeEnum<typeof ActivityTypes, "CUSTOM">;
-		msg?: string;
-		url?: string;
+		type: PresenceStatusData;
+		activity: {
+			type?: ExcludeEnum<typeof ActivityTypes, "CUSTOM">;
+			name?: string;
+			url?: string;
+		}
 	};
 }
