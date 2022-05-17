@@ -1,4 +1,4 @@
-import { TicketInterface } from '@/interfaces/schemas/Ticket';
+import TicketInterface from '@/interfaces/schemas/Ticket';
 import { Schema, SchemaTypes, model } from 'mongoose';
 
 const TicketSchema: Schema = new Schema({

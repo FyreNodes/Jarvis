@@ -1,4 +1,4 @@
-import { InfractionInterface } from '@/interfaces/schemas/Infraction';
+import InfractionInterface from '@/interfaces/schemas/Infraction';
 import { Schema, SchemaTypes, model } from 'mongoose';
 
 const InfractionSchema: Schema = new Schema({

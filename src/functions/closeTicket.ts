@@ -48,5 +48,5 @@ export default async (client: Client, interaction: CommandInteraction | ButtonIn
 		footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	(interaction.guild.channels.cache.get('974552895489990736') as TextChannel).send({ embeds: [embed], files: [`./transcripts/trans-${ticketID}.txt`] });
+	(interaction.guild.channels.cache.get(client.config.channels.transcripts) as TextChannel).send({ embeds: [embed], files: [`./transcripts/trans-${ticketID}.txt`] });
 }
