@@ -1,6 +1,6 @@
 import ticket from '@/database/schemas/ticket';
 import messageLog from '@/database/schemas/messageLog';
-import { MessageLogInterface } from '@/interfaces/schemas/MessageLog';
+import MessageLogInterface from '@/interfaces/schemas/MessageLog';
 import { ButtonInteraction, CommandInteraction, MessageEmbed, TextChannel } from 'discord.js';
 import { writeFileSync } from 'fs';
 import transcript from '@/database/schemas/transcript';
