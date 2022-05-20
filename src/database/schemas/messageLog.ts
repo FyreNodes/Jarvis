@@ -1,5 +1,5 @@
 import { Schema, SchemaTypes, model } from 'mongoose';
-import { MessageLogInterface } from '@/interfaces/schemas/MessageLog';
+import MessageLogInterface from '@/interfaces/schemas/MessageLog';
 
 const MessageLogSchema: Schema = new Schema({
 	guild: {

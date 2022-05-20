@@ -1,6 +1,6 @@
 import ticket from '@/database/schemas/ticket';
 import messageLog from '@/database/schemas/messageLog';
-import { MessageLogInterface } from '@/interfaces/schemas/MessageLog';
+import MessageLogInterface from '@/interfaces/schemas/MessageLog';
 import { ButtonInteraction, CommandInteraction, MessageEmbed, TextChannel } from 'discord.js';
 import { writeFileSync } from 'fs';
 import transcript from '@/database/schemas/transcript';
@@ -48,5 +48,5 @@ export default async (client: Client, interaction: CommandInteraction | ButtonIn
 		footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	(interaction.guild.channels.cache.get('974552895489990736') as TextChannel).send({ embeds: [embed], files: [`./transcripts/trans-${ticketID}.txt`] });
+	(interaction.guild.channels.cache.get(client.config.channels.transcripts) as TextChannel).send({ embeds: [embed], files: [`./transcripts/trans-${ticketID}.txt`] });
 }

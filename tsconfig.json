@@ -12,13 +12,10 @@
         "outDir": "dist",
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@config": ["./config.ts"]
         },
-        "typeRoots": [
-            "node_modules/@types"
-        ],      
+        "typeRoots": ["node_modules/@types"],      
     },
-    "exclude": [
-        "/node_modules/"
-    ]
+    "exclude": ["/node_modules/"]
 }

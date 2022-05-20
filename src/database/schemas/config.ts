@@ -1,5 +1,5 @@
 import { Schema, SchemaTypes, model } from 'mongoose';
-import { ConfigInterface } from '@/interfaces/schemas/Config';
+import ConfigInterface from '@/interfaces/schemas/Config';
 
 const ConfigSchema: Schema = new Schema({
 	botID: {

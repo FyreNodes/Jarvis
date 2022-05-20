@@ -1,8 +1,7 @@
 import { ExcludeEnum, PresenceStatusData } from "discord.js";
 import { ActivityTypes } from "discord.js/typings/enums";
 
-export interface ConfigInterface {
-	botID: string;
+export default interface ConfigInterface {
 	guildID: string;
 	prefix: string;
 	status: {

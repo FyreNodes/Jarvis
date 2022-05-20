@@ -1,4 +1,4 @@
-export interface InfractionInterface {
+export default interface InfractionInterface {
 	infID: number;
 	guild: string;
 	type: string;
