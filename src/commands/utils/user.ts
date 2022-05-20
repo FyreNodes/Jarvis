@@ -47,7 +47,7 @@ function getActivity(presence: Presence): string {
     if (!presence) formattedActivity = 'Offline';
     const activityData = ['PLAYING', 'LISTENING', 'STREAMING'];
     const res = presence.activities.filter(x => activityData.includes(x.type))[0];
-    if (!res) formattedActivity = 'None';
+    if (!res) return formattedActivity = 'None';
     switch (res.type) {
         case 'PLAYING':
             formattedActivity = `Playing ${res.name}`;
