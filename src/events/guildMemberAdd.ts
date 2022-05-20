@@ -1,5 +1,6 @@
 import { GuildMember, MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
 import { createCanvas, loadImage } from "canvas";
+import cfg from "@config";
 
 export default async (member: GuildMember) => {
     const background = await loadImage('./src/assets/welcome.png');
@@ -29,5 +30,5 @@ export default async (member: GuildMember) => {
     ctx.fillText(`Member #${member.guild.memberCount}. Please make sure to read the rules.`, canvas.width / 2, avatar.height + 196);
 
     const attachment = new MessageAttachment(canvas.toBuffer(), `welcome-card.png`);
-    (member.guild.channels.cache.get('961204980260438057') as TextChannel).send({ files: [attachment] });
+    (member.guild.channels.cache.get(cfg.channels.welcome) as TextChannel).send({ files: [attachment] });
 };
