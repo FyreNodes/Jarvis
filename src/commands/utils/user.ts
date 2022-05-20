@@ -66,6 +66,7 @@ function getActivity(presence: Presence): string {
 
 function getMessage(presence: Presence): string {
     if (!presence) return 'Offline';
+    if (!presence.activities.length) return 'None';
     if (presence.activities[0].type !== 'CUSTOM') return 'None';
     return `${presence.activities[0].emoji.name} ${presence.activities[0].state}`;
 }
