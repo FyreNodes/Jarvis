@@ -1,18 +1,16 @@
 import Client from '@/Client';
-import config from '@/database/schemas/config';
-import { Command } from '@/Interfaces';
+import { BaseCommand, Command } from '@/Interfaces';
 import messageLogger from '@/lib/messageLogger';
 import { Message } from 'discord.js';
 
 export default async (client: Client, message: Message) => {
 	if (message.author.bot || !message.guild) return;
 	await messageLogger(client, message);
-	const cfg = await config.findOne({ guildID: message.guild.id });
-	if (!message.content.startsWith(cfg.prefix)) return;
-	const args: string[] = message.content.slice(cfg.prefix.length).trim().split(/ +/g);
+	if (!message.content.startsWith(process.env.PREFIX)) return;
+	const args: string[] = message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
 	const cmd: string = args.shift().toLowerCase();
 	if (cmd.length == 0) return;
-	const command: Command = client.commands.get(cmd);
+	const command: BaseCommand = client.baseCommands.get(cmd);
 	if (!command) return;
 	if (!command.info.permissions) return command.run(client, message, args);
 	let user_perms: boolean[] = [];

@@ -1,10 +1,8 @@
 import Client from '@/Client';
-import config from '@/database/schemas/config';
 import { grey, magentaBright, white, cyanBright } from 'chalk';
 
 export default async (client: Client) => {
-	const cfg = await config.findOne({ guildID: '961161868968333353' });
-	client.user.setPresence({ status: cfg.status.type, activities: [{ type: cfg.status.activity.type, name: cfg.status.activity.name }] });
+	client.user.setPresence({ status: client.config.presence.status, activities: [{ type: client.config.presence.activity.type, name: client.config.presence.activity.name, url: client.config.presence.activity.url && client.config.presence.activity.url }] });
 	console.log(`${grey.bold('[')}${magentaBright.bold('CLIENT')}${grey.bold(']')} ${white(`Logged into Discord as: ${client.user.tag}`)}`);
 	console.log(`${grey.bold('[')}${cyanBright.bold('STARTUP')}${grey.bold(']')} ${white.bold('Client is ready.')}`);
 };

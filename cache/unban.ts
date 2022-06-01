@@ -1,4 +1,4 @@
-import { CommandInfo, CommandRun } from '@/Interfaces';
+/*import { CommandInfo, CommandRun } from '@/Interfaces';
 
 export const run: CommandRun = async (client, message, args) => {
 	try {
@@ -13,4 +13,4 @@ export const info: CommandInfo = {
 	name: 'unban',
 	category: 'moderation',
 	permissions: ['MANAGE_GUILD']
-};
+};*/

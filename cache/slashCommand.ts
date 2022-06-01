@@ -1,4 +1,4 @@
-import Client from '@/Client';
+/*import Client from '@/Client';
 import { Interaction } from '@/Interfaces';
 import { readdirSync } from 'fs';
 
@@ -11,4 +11,4 @@ export const commandInteraction = async (client: Client) => {
 			await client.interactions.set(command.info.name, command);
 		}
 	});
-};
+};*/
