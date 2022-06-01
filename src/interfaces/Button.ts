@@ -12,4 +12,5 @@ export interface ButtonRun {
 
 export interface ButtonInfo {
     custom_id: string;
+    category: string;
 }

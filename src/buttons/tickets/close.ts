@@ -1,14 +1,11 @@
 import closeTicket from "@/functions/closeTicket";
-import { InteractionInfo, InteractionRun } from "@/Interfaces";
-import { ButtonInteraction } from "discord.js";
+import { ButtonInfo, ButtonRun } from "@/Interfaces";
 
-export const run: InteractionRun = async (client, interaction: ButtonInteraction) => {
+export const run: ButtonRun = async (client, interaction) => {
     await closeTicket(client, interaction);
 };
 
-export const info: InteractionInfo = {
-    name: 'button.ticket.close',
-    category: 'tickets',
-    description: 'Close a ticket',
-    intType: 'button'
+export const info: ButtonInfo = {
+    custom_id: 'button.ticket.close',
+    category: 'tickets'
 };
