@@ -1,10 +1,10 @@
-import { CommandInfo, CommandRun } from "@/Interfaces";
+import { BaseCommandInfo, BaseCommandRun } from "@/Interfaces";
 import getUser from "@/utils/getUser";
-import { Activity, Collection, GuildMember, Message, MessageEmbed, Permissions, Presence, PresenceStatus, Role } from "discord.js";
+import { Collection, GuildMember, Message, MessageEmbed, Permissions, Presence, Role } from "discord.js";
 import dayjs from "dayjs";
 import Client from "@/Client";
 
-export const run: CommandRun = async (client, message, args) => {
+export const run: BaseCommandRun = async (client, message, args) => {
     const member = await getUser(message, message.mentions.users.first() || args[0] || message.author);
     console.log(member.presence.activities[0]);
     const embed = new MessageEmbed({
@@ -28,7 +28,7 @@ export const run: CommandRun = async (client, message, args) => {
     message.channel.send({ embeds: [embed] });
 };
 
-export const info: CommandInfo = {
+export const info: BaseCommandInfo = {
     name: 'user',
     category: 'utility'
 };
@@ -78,7 +78,8 @@ function getRoles(roles: Collection<string, Role>, message: Message): Collection
 
 function getAcknowledgements(client: Client, member: GuildMember): string {
     const acknowledgements: string[] = Array();
-    if (client.isDeveloper(member.user)) acknowledgements.push('Jarvis Creator');
+    if (member.user.id === '762931157498331157') acknowledgements.push('Jarvis Creator');
+    if (client.getPermissionLevel(member.user) >= 8) acknowledgements.push('Jarvis Administrator');
     if (member.user.id === member.guild.ownerId) acknowledgements.push('Server Owner');
     if (member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) acknowledgements.push('Server Admin');
     if (member.permissions.has(Permissions.FLAGS.MANAGE_GUILD, false)) acknowledgements.push('Server Manager');

@@ -1,11 +1,10 @@
-import { CommandInfo, CommandRun, InteractionInfo } from '@/Interfaces';
+import { BaseCommandInfo, BaseCommandRun, CommandInfo } from '@/Interfaces';
 import axios from 'axios';
 
-export const run: CommandRun = (client, message, args) => {
+export const run: BaseCommandRun = (client, message, args) => {
 	message.channel.send({ content: 'Updating... Please wait. This process may take a moment.' }).then(async (msg) => {
-		const commands: InteractionInfo[] = Array();
-		client.interactions.forEach((data) => {
-			if (data.info.intType !== 'command') return;
+		const commands: CommandInfo[] = Array();
+		client.commands.forEach((data) => {
 			commands.push(data.info);
 		});
 		await axios({
@@ -23,7 +22,7 @@ export const run: CommandRun = (client, message, args) => {
 	});
 };
 
-export const info: CommandInfo = {
+export const info: BaseCommandInfo = {
 	name: 'update',
 	category: 'admin',
 	permissions: ['ADMINISTRATOR']

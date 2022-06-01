@@ -1,50 +1,67 @@
-import { CommandInfo, CommandRun } from '@/Interfaces';
-import gen from '@/utils/gen';
-import getUser from '@/utils/getUser';
-import { MessageEmbed, TextChannel } from 'discord.js';
-import infraction from '@/database/schemas/infraction';
+import infraction from "@/database/schemas/infraction";
+import { CommandInfo, CommandRun } from "@/Interfaces";
+import gen from "@/utils/gen";
+import { CommandInteraction, MessageEmbed, TextChannel } from "discord.js";
 
-export const run: CommandRun = async (client, message, args) => {
-	const member = await getUser(message, message.mentions.users.first() || args[0]);
-	const reason = message.content.split(/ +/g).slice(2).join(' ');
-	const moderator = message.member;
-	if (!reason) return message.reply({ content: 'You did not specify a reason!' });
-	const infID: number = await gen('id', 6);
-	let userEmbed = new MessageEmbed({
+export const run: CommandRun = async (client, interaction: CommandInteraction) => {
+    const infID: number = await gen('id', 6);
+    let userEmbed = new MessageEmbed({
 		title: 'You have been warned in FyreNodes.',
-		thumbnail: { url: message.guild.iconURL() },
+		thumbnail: { url: interaction.guild.iconURL() },
 		color: '#FAF333',
-		description: `**ID:** ${infID}\n**Reason:** ${reason.replace('-s', '')}\n${message.content.includes('-s') ? '' : `**Moderator:** ${moderator.user.tag} (<@${moderator.id}>)`}`,
+		description: `**ID:** ${infID}\n**Reason:** ${interaction.options.getString('reason')}\n${interaction.options.getBoolean('anonymous') ? '' : `**Moderator:** ${interaction.user.tag} (<@${interaction.user.id}>)`}`,
 		footer: { text: 'Jarvis Moderation', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	let logsEmbed = new MessageEmbed({
-		author: { name: `Infraction | Warn | ${infID}`, iconURL: member.user.avatarURL() },
+    let logsEmbed = new MessageEmbed({
+		author: { name: `Infraction | Warn | ${infID}`, iconURL: interaction.options.getUser('member').avatarURL() },
 		color: '#FAF333',
 		fields: [
 			{
 				name: 'User:',
-				value: `${member.user.tag} (<@${member.id}>)`,
+				value: `${interaction.options.getUser('member').tag} (<@${interaction.options.getUser('member').id}>)`,
 				inline: true
 			},
 			{
 				name: 'Moderator:',
-				value: `${moderator.user.tag} (<@${moderator.id}>)`,
+				value: `${interaction.user.tag} (<@${interaction.user.id}>)`,
 				inline: true
 			},
-			{ name: 'Reason:', value: reason, inline: false }
+			{ name: 'Reason:', value: interaction.options.getString('reason'), inline: false }
 		],
 		footer: { text: 'Jarvis Moderation', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	await infraction.create({ infID: infID, guild: message.guild.id, type: 'Warn', user: member.id, details: { reason: reason, moderator: moderator.id }});
-	await member.send({ embeds: [userEmbed] }).catch(() => {});
-	await (message.guild.channels.cache.get('968665856919888002') as TextChannel).send({ embeds: [logsEmbed] });
-	message.channel.send({ content: `Successfully warned ${member.user.tag}.` });
+    await infraction.create({ infID: infID, guild: interaction.guild.id, type: 'Warn', user: interaction.options.getUser('member').id, details: { reason: interaction.options.getString('reason'), moderator: interaction.user.id }});
+    await interaction.options.getUser('member').send({ embeds: [userEmbed] }).catch(() => {});
+    await (interaction.guild.channels.cache.get('968665856919888002') as TextChannel).send({ embeds: [logsEmbed] });
+    await interaction.reply({ content: `Successfully warned ${interaction.options.getUser('member').tag}.` });
 };
 
 export const info: CommandInfo = {
-	name: 'warn',
-	category: 'moderation',
-	permissions: ['MANAGE_MESSAGES']
+    name: 'warn',
+    category: 'moderation',
+    description: 'Warns a member.',
+    default_member_permissions: Number(1 << 13),
+    dm_permission: false,
+    options: [
+        {
+            type: 6,
+            name: 'member',
+            description: 'Member to warn',
+            required: true
+        },
+        {
+            type: 3,
+            name: 'reason',
+            description: 'Warning reason',
+            required: true
+        },
+        {
+            type: 5,
+            name: 'anonymous',
+            description: 'Anonymous warning?',
+            required: false
+        }
+    ]
 };

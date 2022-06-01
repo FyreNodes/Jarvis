@@ -1,9 +1,8 @@
 {
     "compilerOptions": {
         "module": "CommonJS",
-        "lib": ["ES6"],
         "esModuleInterop": true,
-        "target": "ES6",
+        "target": "ES2020",
         "moduleResolution": "node",
         "sourceMap": true,
         "removeComments": true,
@@ -17,5 +16,6 @@
         },
         "typeRoots": ["node_modules/@types"],      
     },
-    "exclude": ["/node_modules/"]
+    "exclude": ["/node_modules/"],
+    "ts-node": {"require": ["tsconfig-paths/register", "dotenv/config"]}
 }

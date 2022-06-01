@@ -1,12 +1,12 @@
 import ticket from "@/database/schemas/ticket";
-import { CommandInfo, CommandRun } from "@/Interfaces";
+import { CommandRun, CommandInfo } from "@/Interfaces";
 import getUser from "@/utils/getUser";
-import { MessageEmbed } from "discord.js";
+import { CommandInteraction, MessageEmbed } from "discord.js";
 
-export const run: CommandRun = async (client, message, args) => {
-    const member = await getUser(message, message.mentions.users.first() || args[0] || message.author);
-    const tickets = await ticket.find({ guild: message.guild.id, user: member.user.id });
-    if (!tickets.length) return message.channel.send({ content: 'The specified user has no ticket history.' });
+export const run: CommandRun = async (client, interaction: CommandInteraction) => {
+    const member = await getUser(interaction, interaction.options.getUser('member') || interaction.member);
+    const tickets = await ticket.find({ guild: interaction.guild.id, user: member.user.id });
+    if (!tickets.length) return await interaction.reply({ content: 'The specified user has no ticket history.' });
     let embed = new MessageEmbed({
         author: { name: `Ticket History | ${member.user.tag}`, iconURL: member.user.avatarURL() },
         thumbnail: { url: member.user.avatarURL() },
@@ -15,11 +15,21 @@ export const run: CommandRun = async (client, message, args) => {
         footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
         timestamp: Date.now()
     });
-    message.channel.send({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed] });
 };
 
 export const info: CommandInfo = {
     name: 'history',
     category: 'moderation',
-    permissions: ["MANAGE_MESSAGES"]
+    description: 'Display a members ticket history.',
+    default_member_permissions: 0x0000000000002000,
+    dm_permission: false,
+    options: [
+        {
+            type: 6,
+            name: 'member',
+            description: 'The member whos history you would like to view.',
+            required: false
+        }
+    ]
 };

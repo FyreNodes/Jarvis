@@ -1,4 +1,4 @@
-import infraction from '@/database/schemas/infraction';
+/*import infraction from '@/database/schemas/infraction';
 import { CommandInfo, CommandRun } from '@/Interfaces';
 import getUser from '@/utils/getUser';
 import { MessageEmbed, Permissions } from 'discord.js';
@@ -54,4 +54,4 @@ export const info: CommandInfo = {
 	name: 'infraction',
 	category: 'moderation',
 	permissions: ['MODERATE_MEMBERS']
-};
+};*/

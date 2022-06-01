@@ -1,9 +1,8 @@
-import { CommandRun, CommandInfo } from '@/Interfaces';
-import config from '@/database/schemas/config';
-import { ExcludeEnum, PresenceStatusData, ReactionUserManager } from 'discord.js';
+import { CommandRun, CommandInfo, BaseCommandRun, BaseCommandInfo } from '@/Interfaces';
+import { ExcludeEnum, PresenceStatusData } from 'discord.js';
 import { ActivityTypes } from 'discord.js/typings/enums';
 
-export const run: CommandRun = async (client, message, args) => {
+export const run: BaseCommandRun = async (client, message, args) => {
 	if (!args[0]) return message.reply({ content: 'You did not specify the status type!' });
 	if (!args[1]) return message.reply({ content: 'You did not specify the activity type!' });
 	if (!args[2]) return message.reply({ content: 'You did not specify the activity name/url!' });
@@ -13,11 +12,10 @@ export const run: CommandRun = async (client, message, args) => {
 	const activityType = args[1] as ExcludeEnum<typeof ActivityTypes, "CUSTOM">
 	const activityName: string = args[1] === 'STREAMING' ? message.content.split(' ').slice(4).join(' ') : message.content.split(' ').slice(3).join(' ');
 	client.user.setPresence({ status: statusType, activities: [{ type: activityType, name: activityName, url: args[1] === 'STREAMING' ? args[2] : undefined }] });
-	await config.updateOne({ guildID: message.guild.id }, { status: { type: statusType, activity: { type: activityType ,name: activityName, url: args[1] === 'STREAMING' ? args[2] : undefined } } });
 	message.channel.send({ content: `Successfully updated status for ${client.user.username}` });
 };
 
-export const info: CommandInfo = {
+export const info: BaseCommandInfo = {
 	name: 'status',
 	category: 'admin',
 	permissions: ['ADMINISTRATOR']

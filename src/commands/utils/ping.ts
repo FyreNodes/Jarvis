@@ -1,8 +1,8 @@
 import { CommandInfo, CommandRun } from '@/Interfaces';
-import { MessageEmbed } from 'discord.js';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 
-export const run: CommandRun = (client, message, args) => {
-	const appPing = Date.now() - message.createdTimestamp;
+export const run: CommandRun = async (client, interaction: CommandInteraction) => {
+	const appPing = Date.now() - interaction.createdTimestamp;
 	let embed = new MessageEmbed({
 		title: '🏓 System Ping',
 		color: '#1AB6DC',
@@ -10,11 +10,12 @@ export const run: CommandRun = (client, message, args) => {
 		footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	message.channel.send({ embeds: [embed] });
+	interaction.reply({ embeds: [embed] });
 };
 
 export const info: CommandInfo = {
 	name: 'ping',
 	category: 'utils',
-	permissions: ['MANAGE_MESSAGES']
+	description: 'Shows the bots current ping.',
+	dm_permission: true
 };
