@@ -12,11 +12,29 @@ export default async (client: Client, message: Message) => {
 	if (cmd.length == 0) return;
 	const command: BaseCommand = client.baseCommands.get(cmd);
 	if (!command) return;
-	if (!command.info.permissions) return command.run(client, message, args);
-	let user_perms: boolean[] = [];
-	command.info.permissions.forEach((perm) => {
-		if (message.member.permissions.has(perm, true)) user_perms.push(true);
-	});
-	if (!user_perms.includes(true)) return message.reply('You do not have permission!');
-	command.run(client, message, args);
+	if (command.info.guildLock) {
+		switch (command.info.guildLock) {
+			case 'main':
+				if (message.guild.id !== client.config.guild) return message.reply({ content: 'This command is not supported in this guild.' });
+			break;
+
+			case 'staff':
+				if (message.guild.id !== client.config.staffGuild) return;
+			break;
+
+			default:
+				return message.reply({ content: 'This command has not been properly configured by the developer.' });
+		};
+	};
+	if (command.info.permissions) {
+		let user_perms: boolean[] = [];
+		command.info.permissions.forEach((perm) => {
+			if (message.member.permissions.has(perm, true)) user_perms.push(true);
+		});
+		if (!user_perms.includes(true)) return message.reply({ content: 'You do not have permission!' });
+	};
+	if (command.info.permissionLevel) {
+		if (await client.getPermissionLevel(message.author) < command.info.permissionLevel) return message.reply({ content: 'You do not have permission!' });
+	};
+	return command.run(client, message, args);
 };

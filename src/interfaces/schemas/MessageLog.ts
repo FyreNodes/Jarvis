@@ -1,4 +1,4 @@
-export default interface MessageLogInterface {
+export default interface MessageLog {
 	guild: string;
 	message: string;
 	channel: string;

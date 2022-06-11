@@ -1,5 +1,6 @@
 import Client from '@/Client';
 import { CommandInteraction } from 'discord.js';
+import { GuildLockResolveable } from '@/interfaces/Config';
 
 export interface Command {
 	info: CommandInfo;
@@ -17,6 +18,7 @@ export interface CommandInfo {
 	options?: Options[];
 	dm_permission: boolean;
 	default_member_permissions?: number;
+	guildLock?: GuildLockResolveable;
 }
 
 interface Options {

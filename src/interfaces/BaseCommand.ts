@@ -1,6 +1,6 @@
 import Client from '@/Client';
 import { Message, PermissionResolvable } from 'discord.js';
-import { PermissionLevel } from '@/interfaces/Config';
+import { GuildLockResolveable, PermissionLevel } from '@/interfaces/Config';
 
 export interface BaseCommand {
 	info: BaseCommandInfo;
@@ -16,4 +16,5 @@ export interface BaseCommandInfo {
 	category: string;
 	permissions?: PermissionResolvable[];
 	permissionLevel?: PermissionLevel;
+	guildLock?: GuildLockResolveable;
 }
