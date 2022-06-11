@@ -30,6 +30,7 @@ interface Options {
 	max_value?: number;
 	autocomplete?: boolean;
 	choices?: Choices[];
+	options?: Options[];
 }
 
 interface Choices {

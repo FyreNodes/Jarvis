@@ -17,7 +17,7 @@ export default class Client extends DiscordClient {
 	};
 
 	public log = (ch: LogChannel, msg: MessageOptions) => {
-		const channel = this.channels.cache.find(Object.keys(this.config.channels.logs)[ch]) as TextChannel;
+		const channel = this.channels.cache.get(this.config.channels.logs[ch]) as TextChannel;
 		channel.send(msg);
 	};
 };
