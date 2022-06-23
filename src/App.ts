@@ -5,7 +5,7 @@ import transcripts from '@/helpers/transcripts';
 import databaseConnect from '@/database/connect';
 import dayjs from './helpers/modules/dayjs';
 
-const App = async () => {
+export default () => {
 	const client: Client = new Client({
 		makeCache: Options.cacheWithLimits({
 			...Options.defaultMakeCacheSettings,
@@ -30,14 +30,12 @@ const App = async () => {
 		retryLimit: 6
 	});
 	
-	await transcripts();
+	transcripts();
 	eventHandler(client);
 	commandHandler(client);
 	baseCommandHandler(client);
 	databaseConnect();
 	dayjs();
-	
+		
 	client.login(process.env.TOKEN);
 };
-
-export default App;

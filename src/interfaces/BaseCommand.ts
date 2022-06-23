@@ -16,5 +16,6 @@ export interface BaseCommandInfo {
 	category: string;
 	permissions?: PermissionResolvable[];
 	permissionLevel?: PermissionLevel;
+	userWl?: string[];
 	guildLock?: GuildLockResolveable;
 }

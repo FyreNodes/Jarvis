@@ -16,7 +16,7 @@ export interface JarvisConfig {
 		admin: string;
 		support: string;
 		member: string;
-	}
+	};
 	presence: {
 		status: PresenceStatusData;
 		activity: {
@@ -24,7 +24,7 @@ export interface JarvisConfig {
 			name: string;
 			url?: string;
 		}
-	}
+	};
 };
 
 export type PermissionLevel = 0|1|2|3|4|5|6|7|8|9;

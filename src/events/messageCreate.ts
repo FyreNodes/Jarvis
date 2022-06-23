@@ -26,6 +26,7 @@ export default async (client: Client, message: Message) => {
 				return message.reply({ content: 'This command has not been properly configured by the developer.' });
 		};
 	};
+	if (command.info.userWl) if (!command.info.userWl.includes(message.author.id)) return message.reply({ content: 'You do not have permission to use this command.' });
 	if (command.info.permissions) {
 		let user_perms: boolean[] = [];
 		command.info.permissions.forEach((perm) => {
