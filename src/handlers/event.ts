@@ -1,9 +1,10 @@
 import Client from '@/Client';
-import messageCreate from '@/events/messageCreate';
-import ready from '@/events/ready';
-import interactionCreate from '@/events/interactionCreate';
 import { GuildMember, Interaction, Message } from 'discord.js';
 import { grey, green, white } from 'chalk';
+
+import ready from '@/events/ready';
+import messageCreate from '@/events/messageCreate';
+import interactionCreate from '@/events/interactionCreate';
 import guildMemberAdd from '@/events/guildMemberAdd';
 import guildMemberUpdate from '@/events/guildMemberUpdate';
 

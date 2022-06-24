@@ -7,8 +7,6 @@ import transcript from '@/database/schemas/transcript';
 import Client from '@/Client';
 
 export default async (client: Client, interaction: CommandInteraction | ButtonInteraction) => {
-    if (!(await ticket.exists({ channel: interaction.channel.id }))) return interaction.reply({ content: 'This is not a ticket.', ephemeral: true });
-	await interaction.reply({ content: 'Closing ticket...' });
 	const messages: string[] = Array();
 	const ticketData = await ticket.findOne({ channel: interaction.channel.id, guild: interaction.guild.id });
 	const messageLogs = await messageLog.find({ channel: interaction.channel.id, guild: interaction.guild.id });
@@ -19,8 +17,8 @@ export default async (client: Client, interaction: CommandInteraction | ButtonIn
 	await transcript.create({ guild: interaction.guild.id, transcript: messages, ticketID: ticketID });
 	await ticket.updateOne({ channel: interaction.channel.id, guild: interaction.guild.id }, { status: 'closed' });
 	await messageLog.deleteMany({ guild: interaction.guild.id, channel: interaction.channel.id });
-	await interaction.editReply({ content: 'Ticket will close in 10 seconds.' });
-	await interaction.followUp({ content: 'Transcript:', files: [`./transcripts/trans-${ticketID}.txt`] });
+	await interaction.followUp({ content: 'Ticket will close in 10 seconds.', ephemeral: false });
+	await interaction.channel.send({ content: 'Transcript:', files: [`./transcripts/trans-${ticketID}.txt`] });
 	setTimeout(async () => {
 		await interaction.channel.delete();
 	}, 10000);
@@ -36,17 +34,17 @@ export default async (client: Client, interaction: CommandInteraction | ButtonIn
 			},
 			{
 				name: 'Verified:',
-				value: interaction.guild.members.cache.get(interaction.user.id).roles.cache.has('970815386712936448') ? 'Yes' : 'No',
+				value: interaction.guild.members.cache.get(interaction.user.id).roles.cache.has(client.config.roles.verified) ? 'Yes' : 'No',
 				inline: true
 			},
 			{
 				name: 'Member:',
-				value: `${interaction.user.tag} (<@${interaction.user.id}>)`,
+				value: `${interaction.user.tag} (${interaction.user.id})`,
 				inline: false
 			}
 		],
 		footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	(client.channels.cache.get(client.config.channels.logs.transcripts) as TextChannel).send({ embeds: [embed], files: [`./transcripts/trans-${ticketID}.txt`] });
-}
+	client.log('transcripts', { embeds: [embed], files: [`./transcripts/trans-${ticketID}.txt`] });
+};

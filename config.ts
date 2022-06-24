@@ -7,6 +7,7 @@ const Config: JarvisConfig = {
     roles: {
         admin: '979572665427828826',
         support: '979572666790973440',
+        verified: '979572671501185065',
         member: '979572672436518922'
     },
     channels: {

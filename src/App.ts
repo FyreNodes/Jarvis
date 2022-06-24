@@ -1,9 +1,8 @@
 import Client from '@/Client';
 import { Intents, Options } from 'discord.js';
-import { commandHandler, baseCommandHandler, eventHandler } from '@/Handlers';
-import transcripts from '@/helpers/transcripts';
+import { commandHandler, baseCommandHandler, eventHandler, buttonHandler } from '@/Handlers';
 import databaseConnect from '@/database/connect';
-import dayjs from './helpers/modules/dayjs';
+import helpers from '@/helpers';
 
 export default () => {
 	const client: Client = new Client({
@@ -30,12 +29,12 @@ export default () => {
 		retryLimit: 6
 	});
 	
-	transcripts();
+	helpers();
 	eventHandler(client);
+	buttonHandler(client);
 	commandHandler(client);
 	baseCommandHandler(client);
 	databaseConnect();
-	dayjs();
-		
+
 	client.login(process.env.TOKEN);
 };

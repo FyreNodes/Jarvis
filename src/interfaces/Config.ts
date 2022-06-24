@@ -15,6 +15,7 @@ export interface JarvisConfig {
 	roles: {
 		admin: string;
 		support: string;
+		verified: string;
 		member: string;
 	};
 	presence: {

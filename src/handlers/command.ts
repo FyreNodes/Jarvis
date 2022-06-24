@@ -1,6 +1,6 @@
 import Client from '@/Client';
 import { Command } from '@/Interfaces';
-import { readdirSync } from 'fs';
+import { readdirSync } from 'node:fs';
 import { grey, green, white } from 'chalk';
 
 export const commandHandler = async (client: Client) => {
@@ -10,7 +10,7 @@ export const commandHandler = async (client: Client) => {
 		for (let command of commands) {
 			const cmd: Command = require(`${path}/${dir}/${command}`);
 			await client.commands.set(cmd.info.name, cmd);
-		}
+		};
 	});
 	console.log(`${grey.bold('[')}${green.bold('HANDLER')}${grey.bold(']')} ${white('All commands have been loaded.')}`);
 };

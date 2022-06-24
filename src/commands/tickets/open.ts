@@ -51,14 +51,14 @@ export const run: CommandRun = async (client, interaction: CommandInteraction) =
 		thumbnail: { url: interaction.user.avatarURL() },
 		description: `**ID:** ${id}
 		**Member:** ${interaction.user.tag} (<@!${interaction.user.id}>)
-		**Verified:** ${interaction.guild.members.cache.get(interaction.user.id).roles.cache.has('970815386712936448') ? 'Yes' : 'No'}
+		**Verified:** ${interaction.guild.members.cache.get(interaction.user.id).roles.cache.has(client.config.roles.verified) ? 'Yes' : 'No'}
 		**Joined:** ${interaction.guild.members.cache.get(interaction.user.id).joinedAt.toDateString()}
 		**Created:** ${interaction.guild.members.cache.get(interaction.user.id).user.createdAt.toDateString()}`,
 		footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	let closeButton: MessageButton = new MessageButton({ customId: 'button.ticket.close', label: 'Close', emoji: '🔒', style: 'DANGER' });
-	let actionRow = new MessageActionRow({ components: [closeButton] });
+	const closeButton: MessageButton = new MessageButton({ customId: 'btn.ticket.close', label: 'Close', emoji: '🔒', style: 'DANGER' });
+	const actionRow = new MessageActionRow({ components: [closeButton] });
 	await ticket.create({ guild: interaction.guild.id, user: interaction.user.id, channel: ch.id, ticketID: id, status: 'open', department: interaction.options.getString('department') });
 	await interaction.reply({ content: `Ticket has been created. <#${ch.id}>` });
 	ch.send({ content: `<@!${interaction.user.id}>` }).then(async (msg) => await msg.delete());
