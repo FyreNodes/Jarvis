@@ -1,25 +1,27 @@
 import infraction from "@/database/schemas/infraction";
 import { CommandInfo, CommandRun } from "@/Interfaces";
 import gen from "@/utils/gen";
-import { CommandInteraction, MessageEmbed, TextChannel } from "discord.js";
+import { CommandInteraction, MessageEmbed, User } from "discord.js";
 
 export const run: CommandRun = async (client, interaction: CommandInteraction) => {
     const infID: number = await gen('id', 6);
+    const user: User = interaction.options.getUser('user');
+    const reason: string = interaction.options.getString('reason');
     let userEmbed = new MessageEmbed({
 		title: 'You have been warned in FyreNodes.',
 		thumbnail: { url: interaction.guild.iconURL() },
 		color: '#FAF333',
-		description: `**ID:** ${infID}\n**Reason:** ${interaction.options.getString('reason')}\n${interaction.options.getBoolean('anonymous') ? '' : `**Moderator:** ${interaction.user.tag} (<@${interaction.user.id}>)`}`,
+		description: `**ID:** ${infID}\n**Reason:** ${reason}\n${interaction.options.getBoolean('anonymous') ? '' : `**Moderator:** ${interaction.user.tag} (<@${interaction.user.id}>)`}`,
 		footer: { text: 'Jarvis Moderation', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
     let logsEmbed = new MessageEmbed({
-		author: { name: `Infraction | Warn | ${infID}`, iconURL: interaction.options.getUser('member').avatarURL() },
+		author: { name: `Infraction | Warn | ${infID}`, iconURL: user.avatarURL() },
 		color: '#FAF333',
 		fields: [
 			{
 				name: 'User:',
-				value: `${interaction.options.getUser('member').tag} (<@${interaction.options.getUser('member').id}>)`,
+				value: `${user.tag} (${user.id})`,
 				inline: true
 			},
 			{
@@ -27,15 +29,15 @@ export const run: CommandRun = async (client, interaction: CommandInteraction) =
 				value: `${interaction.user.tag} (<@${interaction.user.id}>)`,
 				inline: true
 			},
-			{ name: 'Reason:', value: interaction.options.getString('reason'), inline: false }
+			{ name: 'Reason:', value: reason, inline: false }
 		],
 		footer: { text: 'Jarvis Moderation', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-    await infraction.create({ infID: infID, guild: interaction.guild.id, type: 'Warn', user: interaction.options.getUser('member').id, details: { reason: interaction.options.getString('reason'), moderator: interaction.user.id }});
-    await interaction.options.getUser('member').send({ embeds: [userEmbed] }).catch(() => {});
-    await (interaction.guild.channels.cache.get('968665856919888002') as TextChannel).send({ embeds: [logsEmbed] });
-    await interaction.reply({ content: `Successfully warned ${interaction.options.getUser('member').tag}.` });
+    await infraction.create({ infID: infID, guild: interaction.guild.id, type: 'Warn', user: user.id, details: { reason: reason, moderator: interaction.user.id }});
+    await user.send({ embeds: [userEmbed] }).catch(() => {});
+    client.log('moderation', { embeds: [logsEmbed] });
+    await interaction.reply({ content: `Successfully warned ${user.tag}.` });
 };
 
 export const info: CommandInfo = {
@@ -47,20 +49,20 @@ export const info: CommandInfo = {
     options: [
         {
             type: 6,
-            name: 'member',
-            description: 'Member to warn',
+            name: 'user',
+            description: 'User to perform the action on.',
             required: true
         },
         {
             type: 3,
             name: 'reason',
-            description: 'Warning reason',
+            description: 'Reason for the warning.',
             required: true
         },
         {
             type: 5,
             name: 'anonymous',
-            description: 'Anonymous warning?',
+            description: 'Show the user your username?',
             required: false
         }
     ]

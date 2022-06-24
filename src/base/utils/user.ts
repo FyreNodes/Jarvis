@@ -6,7 +6,6 @@ import Client from "@/Client";
 
 export const run: BaseCommandRun = async (client, message, args) => {
     const member = await getUser(message, message.mentions.users.first() || args[0] || message.author);
-    console.log(member.presence.activities[0]);
     const embed = new MessageEmbed({
         author: { name: `User Info - ${member.user.tag}`, iconURL: member.user.avatarURL() },
         thumbnail: { url: member.user.avatarURL() },
@@ -20,7 +19,7 @@ export const run: BaseCommandRun = async (client, message, args) => {
             { name: 'Joined:', value: `${dayjs(member.joinedTimestamp).tz('America/New_York').format('dddd, MMMM Do, YYYY h:mm A (DD/MM/YYYY)')} (EST/EDT)`, inline: false },
             { name: 'Created:', value: `${dayjs(member.user.createdTimestamp).tz('America/New_York').format('dddd, MMMM Do, YYYY h:mm A (DD/MM/YYYY)')} (EST/EDT)`, inline: false },
             { name: 'Roles:', value: getRoles(member.roles.cache, message).map(r => {return `<@&${r.id}>`}).join(', ') },
-            { name: 'Acknowledgements:', value: getAcknowledgements(client, member), inline: false }
+            { name: 'Acknowledgements:', value: await getAcknowledgements(client, member), inline: false }
         ],
         footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },
         timestamp: Date.now()
@@ -68,7 +67,11 @@ function getMessage(presence: Presence): string {
     if (!presence) return 'Offline';
     if (!presence.activities.length) return 'None';
     if (presence.activities[0].type !== 'CUSTOM') return 'None';
-    return `${presence.activities[0].emoji.name} ${presence.activities[0].state}`;
+    const activity = presence.activities[0];
+    let data: UserMessage = { text: null, emoji: null };
+    if (activity.emoji) if (!activity.emoji.id) data.emoji = activity.emoji.name;
+    if (activity.state) data.text = activity.state;
+    return `${data.emoji === null ? '' : data.emoji} ${data.text === null ? '' : data.text}`;
 }
 
 function getRoles(roles: Collection<string, Role>, message: Message): Collection<string, Role> {
@@ -76,13 +79,18 @@ function getRoles(roles: Collection<string, Role>, message: Message): Collection
     return roles.sort((r1, r2) => (r1.position !== r2.position) ? r2.position - r1.position : parseInt(r1.id) - parseInt(r2.id));
 };
 
-function getAcknowledgements(client: Client, member: GuildMember): string {
+async function getAcknowledgements(client: Client, member: GuildMember): Promise<string> {
     const acknowledgements: string[] = Array();
     if (member.user.id === '762931157498331157') acknowledgements.push('Jarvis Creator');
-    if (client.getPermissionLevel(member.user) >= 8) acknowledgements.push('Jarvis Administrator');
+    if (await client.getPermissionLevel(member.user) >= 8) acknowledgements.push('Jarvis Administrator');
     if (member.user.id === member.guild.ownerId) acknowledgements.push('Server Owner');
     if (member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) acknowledgements.push('Server Admin');
     if (member.permissions.has(Permissions.FLAGS.MANAGE_GUILD, false)) acknowledgements.push('Server Manager');
     if (member.permissions.has(Permissions.FLAGS.MODERATE_MEMBERS, false)) acknowledgements.push('Server Moderator');
     return acknowledgements.length ? acknowledgements.join(', ') : 'None';
 };
+
+interface UserMessage {
+    emoji: string|null;
+    text: string|null;
+}

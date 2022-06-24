@@ -1,4 +1,4 @@
-export default interface TranscriptInterface {
+export default interface Transcript {
     guild: string;
     transcript: string[];
     ticketID: number;

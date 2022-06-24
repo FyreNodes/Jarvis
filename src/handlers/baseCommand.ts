@@ -1,6 +1,6 @@
 import Client from '@/Client';
 import { BaseCommand } from '@/Interfaces';
-import { readdirSync } from 'fs';
+import { readdirSync } from 'node:fs';
 import { grey, green, white } from 'chalk';
 
 export const baseCommandHandler = async (client: Client) => {

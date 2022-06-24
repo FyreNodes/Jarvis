@@ -1,4 +1,4 @@
-export default interface TicketInterface {
+export default interface Ticket {
 	ticketID: number;
 	guild: string;
 	user: string;

@@ -1,11 +1,10 @@
 import Client from '@/Client';
 import { Intents, Options } from 'discord.js';
-import { commandHandler, baseCommandHandler, eventHandler } from '@/Handlers';
-import transcripts from '@/helpers/transcripts';
+import { commandHandler, baseCommandHandler, eventHandler, buttonHandler } from '@/Handlers';
 import databaseConnect from '@/database/connect';
-import dayjs from './helpers/modules/dayjs';
+import helpers from '@/helpers';
 
-const App = async () => {
+export default () => {
 	const client: Client = new Client({
 		makeCache: Options.cacheWithLimits({
 			...Options.defaultMakeCacheSettings,
@@ -30,14 +29,12 @@ const App = async () => {
 		retryLimit: 6
 	});
 	
-	await transcripts();
+	helpers();
 	eventHandler(client);
+	buttonHandler(client);
 	commandHandler(client);
 	baseCommandHandler(client);
 	databaseConnect();
-	dayjs();
-	
+
 	client.login(process.env.TOKEN);
 };
-
-export default App;
