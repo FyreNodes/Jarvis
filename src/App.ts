@@ -2,7 +2,7 @@ import Client from '@/Client';
 import { Intents, Options } from 'discord.js';
 import { commandHandler, baseCommandHandler, eventHandler, buttonHandler } from '@/Handlers';
 import databaseConnect from '@/database/connect';
-import helpers from '@/helpers';
+import helpers from '@/helpers/index';
 
 export default () => {
 	const client: Client = new Client({
