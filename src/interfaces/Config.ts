@@ -1,10 +1,11 @@
-import { ExcludeEnum, PresenceStatusData } from "discord.js";
+import { ColorResolvable, ExcludeEnum, PresenceStatusData } from "discord.js";
 import { ActivityTypes } from "discord.js/typings/enums";
 
 export interface JarvisConfig {
 	guild: string;
 	staffGuild: string;
 	tickets: string;
+	themeColor: ColorResolvable;
 	channels: {
 		welcome: string;
 		logs: {
