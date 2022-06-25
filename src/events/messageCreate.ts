@@ -1,11 +1,13 @@
 import Client from '@/Client';
 import { BaseCommand, Command } from '@/Interfaces';
 import messageLogger from '@/lib/messageLogger';
+import contentValidator from '@/lib/contentValidator';
 import { Message } from 'discord.js';
 
 export default async (client: Client, message: Message) => {
 	if (message.author.bot || !message.guild) return;
 	await messageLogger(client, message);
+	await contentValidator(client, message);
 	if (!message.content.startsWith(process.env.PREFIX)) return;
 	const args: string[] = message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
 	const cmd: string = args.shift().toLowerCase();

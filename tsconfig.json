@@ -11,8 +11,9 @@
         "outDir": "dist",
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"],
-            "@config": ["config.ts"]
+            "@/*": ["./src/*"],
+            "@/root/*": ["./*"],
+            "@config": ["./config.ts"]
         },
         "typeRoots": ["node_modules/@types"],      
     },

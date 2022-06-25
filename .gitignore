@@ -110,3 +110,6 @@ yarn.lock
 
 # Temporary transcripts directory.
 /transcripts/
+
+# Tesseract.js Data
+eng.traineddata
