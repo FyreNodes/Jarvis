@@ -1,6 +1,7 @@
 import reactionRole from "@/database/schemas/roles/reactionRole";
 import reactionRoleGroup from "@/database/schemas/roles/reactionRoleGroup";
 import { CommandInfo, CommandRun } from "@/Interfaces";
+import permissions from "@/lib/permissions";
 import gen from "@/utils/gen";
 import { MessageActionRow, MessageEmbed, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
 
@@ -120,7 +121,7 @@ export const info: CommandInfo = {
     category: 'utility',
     description: 'Manage reaction roles',
     dm_permission: false,
-    default_member_permissions: Number(1 << 5),
+    default_member_permissions: permissions.manageGuild,
     options: [
         {
             type: 1,

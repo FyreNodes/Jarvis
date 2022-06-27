@@ -2,7 +2,7 @@ import config from '@config';
 import { Client as DiscordClient, Collection, MessageOptions, TextChannel, User } from 'discord.js';
 import { Command, BaseCommand, JarvisConfig, Button } from '@/Interfaces';
 import { LogChannel, PermissionLevel } from '@/interfaces/Config';
-import permission from './database/schemas/permission';
+import permission from '@/database/schemas/permission';
 
 export default class Client extends DiscordClient {
 	public commands: Collection<string, Command> = new Collection();
