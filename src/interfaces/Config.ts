@@ -1,5 +1,5 @@
-import { ColorResolvable, ExcludeEnum, PresenceStatusData } from "discord.js";
-import { ActivityTypes } from "discord.js/typings/enums";
+import { ColorResolvable, ExcludeEnum, PresenceStatusData } from 'discord.js';
+import { ActivityTypes } from 'discord.js/typings/enums';
 
 export interface JarvisConfig {
 	guild: string;
@@ -25,10 +25,10 @@ export interface JarvisConfig {
 			type: ExcludeEnum<typeof ActivityTypes, 'CUSTOM'>;
 			name: string;
 			url?: string;
-		}
+		};
 	};
-};
+}
 
-export type PermissionLevel = 0|1|2|3|4|5|6|7|8|9;
-export type LogChannel = 'moderation'|'transcripts';
-export type GuildLockResolveable = 'main'|'staff';
+export type PermissionLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type LogChannel = 'moderation' | 'transcripts';
+export type GuildLockResolveable = 'main' | 'staff';

@@ -1,16 +1,16 @@
-import Client from "@/Client";
-import { ButtonInteraction, EmojiIdentifierResolvable, MessageButtonStyle } from "discord.js";
+import Client from '@/Client';
+import { ButtonInteraction, EmojiIdentifierResolvable, MessageButtonStyle } from 'discord.js';
 
 export interface Button {
-    run: ButtonRun;
-    info: ButtonInfo;
+	run: ButtonRun;
+	info: ButtonInfo;
 }
 
 export interface ButtonRun {
-    (client: Client, interaction: ButtonInteraction);
+	(client: Client, interaction: ButtonInteraction);
 }
 
 export interface ButtonInfo {
-    custom_id: string;
-    category: string;
+	custom_id: string;
+	category: string;
 }

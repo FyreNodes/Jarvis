@@ -28,7 +28,7 @@ export default () => {
 		partials: ['CHANNEL', 'GUILD_MEMBER', 'GUILD_SCHEDULED_EVENT', 'MESSAGE', 'REACTION', 'USER'],
 		retryLimit: 6
 	});
-	
+
 	helpers();
 	eventHandler(client);
 	buttonHandler(client);

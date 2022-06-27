@@ -10,15 +10,17 @@ export const run: BaseCommandRun = (client, message, args) => {
 		await axios({
 			method: 'PUT',
 			url: `https://discord.com/api/v9/applications/${client.user.id}/commands`,
-			headers: { 'Authorization': `Bot ${process.env.TOKEN}`, 'Content-Type': "application/json" },
+			headers: { Authorization: `Bot ${process.env.TOKEN}`, 'Content-Type': 'application/json' },
 			data: commands
-		}).then(res => {
-			msg.edit({ content: `Request Completed - OK - Code: \`${res.status}\`` });
-			//console.log(res.data);
-		}).catch(err => {
-			console.error(err);
-			return msg.edit({ content: `Request Completed - Error:\n\`\`\`txt\n${err}\n\`\`\`` });
-		});
+		})
+			.then((res) => {
+				msg.edit({ content: `Request Completed - OK - Code: \`${res.status}\`` });
+				//console.log(res.data);
+			})
+			.catch((err) => {
+				console.error(err);
+				return msg.edit({ content: `Request Completed - Error:\n\`\`\`txt\n${err}\n\`\`\`` });
+			});
 	});
 };
 

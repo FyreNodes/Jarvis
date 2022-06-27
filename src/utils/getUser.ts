@@ -7,5 +7,5 @@ export default async (message: Message | CommandInteraction, user: any): Promise
 		return message.guild.members.cache.get(user);
 	} else {
 		await message.reply({ content: 'Invalid user specified!' });
-	};
+	}
 };

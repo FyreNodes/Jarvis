@@ -1,12 +1,12 @@
-import { BaseCommandInfo, BaseCommandRun } from "@/Interfaces";
+import { BaseCommandInfo, BaseCommandRun } from '@/Interfaces';
 
 export const run: BaseCommandRun = async (client, message, args) => {
-    client.emit('guildMemberAdd', message.member);
+	client.emit('guildMemberAdd', message.member);
 };
 
 export const info: BaseCommandInfo = {
-    name: 'emit',
-    category: 'admin',
-    permissions: ['ADMINISTRATOR'],
-    guildLock: 'main'
+	name: 'emit',
+	category: 'admin',
+	permissions: ['ADMINISTRATOR'],
+	guildLock: 'main'
 };
