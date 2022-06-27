@@ -11,11 +11,7 @@ export const run: CommandRun = async (client, interaction) => {
 			let vEmbed = new MessageEmbed({
 				author: { name: `Infraction's - ${user.tag}`, iconURL: user.avatarURL() },
 				color: '#1AB6DC',
-				description: vInf
-					.map((data) => {
-						return `**ID:** ${data.infID} | **Moderator:** ${interaction.guild.members.cache.get(data.details.moderator).user.tag} | **Reason:** ${data.details.reason} ${data.details.duration ? `| **Duration:** ${data.details.duration}` : ``}`;
-					})
-					.join('\n'),
+				description: vInf.map((data) => {return `**ID:** ${data.infID} | **Moderator:** ${interaction.guild.members.cache.get(data.details.moderator).user.tag} | **Reason:** ${data.details.reason} ${data.details.duration ? `| **Duration:** ${data.details.duration}` : ``}`}).join('\n'), // prettier-ignore
 				thumbnail: { url: user.avatarURL() },
 				footer: { text: 'Jarvis Moderation', iconURL: client.user.avatarURL() },
 				timestamp: Date.now()

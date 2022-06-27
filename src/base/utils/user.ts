@@ -18,14 +18,7 @@ export const run: BaseCommandRun = async (client, message, args) => {
 			{ name: 'Message:', value: getMessage(member.presence), inline: true },
 			{ name: 'Joined:', value: `${dayjs(member.joinedTimestamp).tz('America/New_York').format('dddd, MMMM Do, YYYY h:mm A (DD/MM/YYYY)')} (EST/EDT)`, inline: false },
 			{ name: 'Created:', value: `${dayjs(member.user.createdTimestamp).tz('America/New_York').format('dddd, MMMM Do, YYYY h:mm A (DD/MM/YYYY)')} (EST/EDT)`, inline: false },
-			{
-				name: 'Roles:',
-				value: getRoles(member.roles.cache, message)
-					.map((r) => {
-						return `<@&${r.id}>`;
-					})
-					.join(', ')
-			},
+			{ name: 'Roles:', value: getRoles(member.roles.cache, message).map((r) => {return `<@&${r.id}>`}).join(', ') /* prettier-ignore */ },
 			{ name: 'Acknowledgements:', value: await getAcknowledgements(client, member), inline: false }
 		],
 		footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },

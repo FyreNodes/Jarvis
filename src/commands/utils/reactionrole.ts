@@ -51,11 +51,7 @@ export const run: CommandRun = async (client, interaction) => {
 				let embed = new MessageEmbed({
 					title: `${interaction.guild.name} - Reaction Role Groups`,
 					color: client.config.themeColor,
-					description: groups
-						.map((r) => {
-							return `**ID:** ${r.id} - **Name:** ${r.name}`;
-						})
-						.join('\n'),
+					description: groups.map((r) => {return `**ID:** ${r.id} - **Name:** ${r.name}`}).join('\n'), // prettier-ignore
 					footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },
 					timestamp: Date.now()
 				});

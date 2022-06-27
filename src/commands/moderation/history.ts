@@ -11,11 +11,7 @@ export const run: CommandRun = async (client, interaction: CommandInteraction) =
 		author: { name: `Ticket History | ${member.user.tag}`, iconURL: member.user.avatarURL() },
 		thumbnail: { url: member.user.avatarURL() },
 		color: '#1AB6DC',
-		description: tickets
-			.map((data) => {
-				return `**ID:** ${data.ticketID} | **Department:** ${data.department.replace('billing', 'Billing').replace('tech', 'Technical').replace('general', 'General')}`;
-			})
-			.join('\n'),
+		description: tickets.map((data) => {return `**ID:** ${data.ticketID} | **Department:** ${data.department.replace('billing', 'Billing').replace('tech', 'Technical').replace('general', 'General')}`}).join('\n'), // prettier-ignore
 		footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
