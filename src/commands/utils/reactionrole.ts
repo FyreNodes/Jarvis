@@ -1,9 +1,10 @@
 import reactionRole from '@/database/schemas/roles/reactionRole';
+import reactionRoleCache from '@/database/schemas/roles/reactionRoleCache';
 import reactionRoleGroup from '@/database/schemas/roles/reactionRoleGroup';
 import { CommandInfo, CommandRun } from '@/Interfaces';
 import permissions from '@/lib/permissions';
 import gen from '@/utils/gen';
-import { MessageActionRow, MessageEmbed, MessageSelectMenu, MessageSelectOptionData } from 'discord.js';
+import { ColorResolvable, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, MessageSelectOptionData } from 'discord.js';
 
 export const run: CommandRun = async (client, interaction) => {
 	let subcommand: boolean = undefined;
@@ -26,27 +27,42 @@ export const run: CommandRun = async (client, interaction) => {
 				});
 				await interaction.reply({ content: `Successfully created ${interaction.options.getString('name')} reaction role.` });
 			} else {
-				await reactionRoleGroup.create({ id: rID, guild: interaction.guild.id, name: interaction.options.getString('name'), description: interaction.options.getString('description') });
+				let image: string = undefined;
+				let color: ColorResolvable = undefined;
+				if (interaction.options.getString('image')) {
+					if (!parseUrl(interaction.options.getString('image'))) return await interaction.reply({ content: 'Invalid image url specified!' });
+					image = interaction.options.getString('image');
+				};
+				if (interaction.options.getString('color')) {
+					if (!validateHex(interaction.options.getString('color'))) return await interaction.reply({ content: 'Invalid color specified!' });
+					color = interaction.options.getString('color').toUpperCase() as ColorResolvable;
+				};
+				await reactionRoleGroup.create({ 
+					id: rID,
+					guild: interaction.guild.id,
+					name: interaction.options.getString('name'),
+					description: interaction.options.getString('description'),
+					image: image,
+					color: color
+				});
 				await interaction.reply({ content: `Successfully created ${interaction.options.getString('name')} group.` });
 			}
 			break;
 
 		case 'list':
 			if (!subcommand) {
+				if (!await reactionRole.exists({ guild: interaction.guild.id })) return await interaction.reply({ content: 'There are no reaction roles.' });
 				const roles = await reactionRole.find({ guild: interaction.guild.id });
 				let embed = new MessageEmbed({
 					title: `${interaction.guild.name} - Reaction Roles`,
 					color: client.config.themeColor,
-					description: roles
-						.map((r) => {
-							return `**ID:** ${r.id} - **Name:** ${r.name} - **Role:** <@&${r.role}>`;
-						})
-						.join('\n'),
+					description: roles.map((r) => {return `**ID:** ${r.id} - **Name:** ${r.name} - **Role:** <@&${r.role}>`}).join('\n'), // prettier-ignore
 					footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },
 					timestamp: Date.now()
 				});
 				await interaction.reply({ embeds: [embed] });
 			} else {
+				if (!await reactionRoleGroup.exists({ guild: interaction.guild.id })) return await interaction.reply({ content: 'There are no reaction role groups.' });
 				const groups = await reactionRoleGroup.find({ guild: interaction.guild.id });
 				let embed = new MessageEmbed({
 					title: `${interaction.guild.name} - Reaction Role Groups`,
@@ -79,8 +95,9 @@ export const run: CommandRun = async (client, interaction) => {
 				const group = await reactionRoleGroup.findOne({ id: id, guild: interaction.guild.id });
 				let vEmbed = new MessageEmbed({
 					title: `${group.name} - ${group.id}`,
-					color: client.config.themeColor,
+					color: group.color || client.config.themeColor,
 					description: group.description,
+					image: { url: group.image },
 					footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },
 					timestamp: Date.now()
 				});
@@ -93,7 +110,7 @@ export const run: CommandRun = async (client, interaction) => {
 			const group = await reactionRoleGroup.findOne({ guild: interaction.guild.id, id: interaction.options.getInteger('group') });
 			let oEmbed = new MessageEmbed({
 				title: group.name,
-				color: client.config.themeColor,
+				color: group.color || client.config.themeColor,
 				description: group.description,
 				footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },
 				timestamp: Date.now()
@@ -115,9 +132,13 @@ export const run: CommandRun = async (client, interaction) => {
 				await interaction.reply({ content: 'Successfully deleted reaction role.' });
 			} else {
 				if (!(await reactionRoleGroup.exists({ id: interaction.options.getInteger('id'), guild: interaction.guild.id }))) return await interaction.reply({ content: 'Invalid group id specified!' });
-				await reactionRoleGroup.deleteOne({ id: id, guild: interaction.guild.id });
-				await interaction.reply({ content: 'Successfully deleted group.' });
-			}
+				const continueButton = new MessageButton({ customId: 'btn.rr.group.delete.confirm', label: 'Continue', emoji: '<:tick_yes:990760873519874060>', style: 'SUCCESS' });
+				const cancelButton = new MessageButton({ customId: 'btn.rr.group.delete.cancel', label: 'Cancel', emoji: '<:tick_no:990760953698222090>', style: 'DANGER' });
+				const row = new MessageActionRow({ components: [continueButton, cancelButton] });
+				await interaction.reply({ content: '**Warning!** This action will delete the specified group and all reaction roles in it. Would you like to continue?', components: [row], fetchReply: true }).then(async (int) => {
+					await reactionRoleCache.create({ guild: interaction.guild.id, channel: interaction.channel.id, int: int.id, data: id });
+				});
+			};
 			break;
 	}
 };
@@ -225,6 +246,18 @@ export const info: CommandInfo = {
 							name: 'description',
 							description: 'The description of the group.',
 							required: true
+						},
+						{
+							type: 3,
+							name: 'image',
+							description: 'The image of the group (URL).',
+							required: false
+						},
+						{
+							type: 3,
+							name: 'color',
+							description: 'The color of the group (Hex or name).',
+							required: false
 						}
 					]
 				},
@@ -262,4 +295,14 @@ export const info: CommandInfo = {
 			]
 		}
 	]
+};
+
+function parseUrl(url: string): boolean {
+	const res = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+	return (res !== null);
+};
+
+function validateHex(hex: string): boolean {
+	if (hex.startsWith('#') && hex.length == 7) return true;
+	return false;
 };

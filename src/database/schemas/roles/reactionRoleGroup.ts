@@ -17,6 +17,14 @@ const ReactionRoleGroupSchema: Schema = new Schema({
 	description: {
 		type: SchemaTypes.String,
 		required: true
+	},
+	image: {
+		type: SchemaTypes.String,
+		required: false
+	},
+	color: {
+		type: SchemaTypes.String,
+		required: false
 	}
 });
 

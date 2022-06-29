@@ -22,6 +22,10 @@ const ReactionRoleSchema: Schema = new Schema({
 		type: SchemaTypes.String,
 		required: true
 	},
+	emoji: {
+		type: SchemaTypes.String,
+		required: false
+	},
 	role: {
 		type: SchemaTypes.String,
 		required: true
