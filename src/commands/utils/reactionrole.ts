@@ -1,5 +1,4 @@
 import reactionRole from '@/database/schemas/roles/reactionRole';
-import reactionRoleCache from '@/database/schemas/roles/reactionRoleCache';
 import reactionRoleGroup from '@/database/schemas/roles/reactionRoleGroup';
 import { CommandInfo, CommandRun } from '@/Interfaces';
 import permissions from '@/lib/permissions';
@@ -135,8 +134,26 @@ export const run: CommandRun = async (client, interaction) => {
 				const continueButton = new MessageButton({ customId: 'btn.rr.group.delete.confirm', label: 'Continue', emoji: '<:tick_yes:990760873519874060>', style: 'SUCCESS' });
 				const cancelButton = new MessageButton({ customId: 'btn.rr.group.delete.cancel', label: 'Cancel', emoji: '<:tick_no:990760953698222090>', style: 'DANGER' });
 				const row = new MessageActionRow({ components: [continueButton, cancelButton] });
-				await interaction.reply({ content: '**Warning!** This action will delete the specified group and all reaction roles in it. Would you like to continue?', components: [row], fetchReply: true }).then(async (int) => {
-					await reactionRoleCache.create({ guild: interaction.guild.id, channel: interaction.channel.id, int: int.id, data: id });
+				await interaction.reply({ content: '**Warning!** This action will delete the specified group and all reaction roles in it. Would you like to continue?', components: [row] });
+				const collector = interaction.channel.createMessageComponentCollector();
+				collector.on('collect', async (int) => {
+					switch (int.customId) {
+						case 'btn.rr.group.delete.confirm':
+							continueButton.setDisabled(true);
+							cancelButton.setDisabled(true);
+							await int.update({ components: [row] });
+							await reactionRole.deleteMany({ group: id, guild: interaction.guild.id });
+							await reactionRoleGroup.deleteOne({ id: id, guild: interaction.guild.id });
+							await interaction.channel.send({ content: 'Successfully deleted group.' });
+						break;
+
+						case 'btn.rr.group.delete.cancel':
+							continueButton.setDisabled(true);
+							cancelButton.setDisabled(true);
+							await int.update({ components: [row] });
+							await interaction.channel.send({ content: 'Action was cancelled.' });
+						break;
+					};
 				});
 			};
 			break;
@@ -146,7 +163,7 @@ export const run: CommandRun = async (client, interaction) => {
 export const info: CommandInfo = {
 	name: 'reactionrole',
 	category: 'utility',
-	description: 'Manage reaction roles',
+	description: 'Manage reaction roles.',
 	dm_permission: false,
 	default_member_permissions: permissions.manageGuild,
 	options: [
@@ -256,7 +273,7 @@ export const info: CommandInfo = {
 						{
 							type: 3,
 							name: 'color',
-							description: 'The color of the group (Hex or name).',
+							description: 'The color of the group (Hex).',
 							required: false
 						}
 					]
@@ -282,7 +299,7 @@ export const info: CommandInfo = {
 				{
 					type: 1,
 					name: 'delete',
-					description: 'Delete a group',
+					description: 'Delete a group.',
 					options: [
 						{
 							type: 4,
