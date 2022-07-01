@@ -131,8 +131,8 @@ export const run: CommandRun = async (client, interaction) => {
 				await interaction.reply({ content: 'Successfully deleted reaction role.' });
 			} else {
 				if (!(await reactionRoleGroup.exists({ id: interaction.options.getInteger('id'), guild: interaction.guild.id }))) return await interaction.reply({ content: 'Invalid group id specified!' });
-				const continueButton = new MessageButton({ customId: 'btn.rr.group.delete.confirm', label: 'Continue', emoji: '<:tick_yes:990760873519874060>', style: 'SUCCESS' });
-				const cancelButton = new MessageButton({ customId: 'btn.rr.group.delete.cancel', label: 'Cancel', emoji: '<:tick_no:990760953698222090>', style: 'DANGER' });
+				const continueButton = new MessageButton({ customId: 'btn.rr.group.delete.confirm', label: 'Continue', style: 'SUCCESS' });
+				const cancelButton = new MessageButton({ customId: 'btn.rr.group.delete.cancel', label: 'Cancel', style: 'DANGER' });
 				const row = new MessageActionRow({ components: [continueButton, cancelButton] });
 				await interaction.reply({ content: '**Warning!** This action will delete the specified group and all reaction roles in it. Would you like to continue?', components: [row] });
 				const collector = interaction.channel.createMessageComponentCollector();
