@@ -8,8 +8,8 @@ export default async (client: Client, message: Message) => {
 	if (message.author.bot || !message.guild) return;
 	await messageLogger(client, message);
 	await contentValidator(client, message);
-	if (!message.content.startsWith(process.env.PREFIX)) return;
-	const args: string[] = message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
+	if (!message.content.startsWith(process.env.BOT_PREFIX)) return;
+	const args: string[] = message.content.slice(process.env.BOT_PREFIX.length).trim().split(/ +/g);
 	const cmd: string = args.shift().toLowerCase();
 	if (cmd.length == 0) return;
 	const command: BaseCommand = client.baseCommands.get(cmd);
