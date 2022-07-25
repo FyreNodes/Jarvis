@@ -1,4 +1,4 @@
-import { PresenceStatusData } from 'discord.js';
+import { ActivityType, PresenceStatusData } from 'discord.js';
 
 export default interface JarvisConfig {
 	guild: string;
@@ -17,14 +17,6 @@ export default interface JarvisConfig {
 		support: string;
 		verified: string;
 		member: string;
-	};
-	presence: {
-		status: PresenceStatusData;
-		activity: {
-			type: string;
-			name: string;
-			url?: string;
-		};
 	};
 }
 

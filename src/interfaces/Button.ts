@@ -1,5 +1,5 @@
 import Client from '@/Client';
-import { ButtonInteraction, EmojiIdentifierResolvable, MessageButtonStyle } from 'discord.js';
+import { ButtonInteraction } from 'discord.js';
 
 export interface Button {
 	run: ButtonRun;
