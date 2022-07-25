@@ -10,9 +10,9 @@
 	},
 	"scripts": {
 		"_comment": "Use 'yarn prod' for local production build. Use 'yarn build' & 'yarn start' for production hosting.",
-		"start": "node -r dotenv/config index.js",
+		"start": "node -r dotenv/config dist/index.js",
 		"build": "tsc --build; tsc-alias -p tsconfig.json",
-		"prod": "yarn run build; NODE_ENV=production node -r dotenv/config app/index.js",
+		"prod": "yarn run build; NODE_ENV=production node -r dotenv/config dist/index.js",
 		"dev": "clear; NODE_ENV=development ts-node-dev -r tsconfig-paths/register -r dotenv/config --project tsconfig.json index.ts",
 		"lint": "prettier --check 'src/**/*'",
 		"lint:fix": "prettier --write src/**/*"

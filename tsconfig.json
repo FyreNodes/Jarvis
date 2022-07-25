@@ -8,7 +8,7 @@
         "removeComments": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "outDir": "app",
+        "outDir": "dist",
         "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"],
