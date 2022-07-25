@@ -1,12 +1,13 @@
 import ticket from '@/database/schemas/ticket';
 import messageLog from '@/database/schemas/messageLog';
 import MessageLogInterface from '@/interfaces/schemas/MessageLog';
-import { ButtonInteraction, CommandInteraction, MessageEmbed, TextChannel } from 'discord.js';
+import { ButtonInteraction, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { writeFileSync } from 'fs';
 import transcript from '@/database/schemas/transcript';
 import Client from '@/Client';
+import formatDept from '@/utils/formatDept';
 
-export default async (client: Client, interaction: CommandInteraction | ButtonInteraction) => {
+export default async (client: Client, interaction: ChatInputCommandInteraction | ButtonInteraction) => {
 	const messages: string[] = Array();
 	const ticketData = await ticket.findOne({ channel: interaction.channel.id, guild: interaction.guild.id });
 	const messageLogs = await messageLog.find({ channel: interaction.channel.id, guild: interaction.guild.id });
@@ -22,14 +23,14 @@ export default async (client: Client, interaction: CommandInteraction | ButtonIn
 	setTimeout(async () => {
 		await interaction.channel.delete();
 	}, 10000);
-	let embed = new MessageEmbed({
+	let embed = new EmbedBuilder({
 		title: `Ticket Transcript | ${ticketID}`,
 		thumbnail: { url: interaction.user.avatarURL() },
-		color: '#32B913',
+		color: 0x32b913,
 		fields: [
 			{
 				name: 'Department:',
-				value: ticketDep.replace('billing', 'Billing').replace('tech', 'Technical').replace('general', 'General'),
+				value: formatDept(ticketDep),
 				inline: true
 			},
 			{

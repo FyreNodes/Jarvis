@@ -1,53 +1,48 @@
 import ticket from '@/database/schemas/ticket';
 import { CommandInfo, CommandRun } from '@/Interfaces';
+import formatDept from '@/utils/formatDept';
 import gen from '@/utils/gen';
-import { CommandInteraction, MessageActionRow, MessageButton, MessageEmbed, Permissions } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, EmbedBuilder, PermissionsBitField } from 'discord.js';
 
-export const run: CommandRun = async (client, interaction: CommandInteraction) => {
+export const run: CommandRun = async (client, interaction) => {
 	if (await ticket.exists({ guild: interaction.guild.id, user: interaction.user.id, status: 'open' })) return interaction.reply({ content: 'You already have an open ticket.', ephemeral: true });
 	const id = await gen('id', 6);
-	const ch = await interaction.guild.channels.create(`${interaction.options.get('department').value}-${interaction.user.username}`, {
-		type: 'GUILD_TEXT',
-		parent: client.config.tickets,
-		topic: `${interaction.options.get('department').value.toString().replace('billing', 'Billing').replace('tech', 'Technical').replace('general', 'General')} Support ticket for ${interaction.user.tag} (${interaction.user.id})`,
+	const department = interaction.options.getString('department');
+	const permissions: bigint[] = [
+		PermissionsBitField.Flags.ViewChannel,
+		PermissionsBitField.Flags.SendMessages,
+		PermissionsBitField.Flags.AttachFiles,
+		PermissionsBitField.Flags.EmbedLinks,
+		PermissionsBitField.Flags.AddReactions,
+		PermissionsBitField.Flags.ReadMessageHistory,
+		PermissionsBitField.Flags.UseExternalEmojis,
+		PermissionsBitField.Flags.UseExternalStickers
+	];
+	const channel = await interaction.guild.channels.create({
+		type: ChannelType.GuildText,
+		name: `${department}-${interaction.user.username}`,
+		topic: `${formatDept(department)} support ticket for ${interaction.user.tag} (${interaction.user.id})`,
 		reason: 'Automated Action: Ticket Created',
+		parent: client.config.tickets,
 		position: 1,
 		permissionOverwrites: [
 			{
 				id: client.config.roles.support,
-				type: 'role',
-				allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.ATTACH_FILES, Permissions.FLAGS.EMBED_LINKS, Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.READ_MESSAGE_HISTORY, Permissions.FLAGS.USE_EXTERNAL_EMOJIS, Permissions.FLAGS.USE_EXTERNAL_STICKERS]
-			},
-			{
-				id: client.config.roles.admin,
-				type: 'role',
-				allow: [
-					Permissions.FLAGS.VIEW_CHANNEL,
-					Permissions.FLAGS.SEND_MESSAGES,
-					Permissions.FLAGS.ATTACH_FILES,
-					Permissions.FLAGS.EMBED_LINKS,
-					Permissions.FLAGS.ADD_REACTIONS,
-					Permissions.FLAGS.READ_MESSAGE_HISTORY,
-					Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
-					Permissions.FLAGS.USE_EXTERNAL_STICKERS,
-					Permissions.FLAGS.MANAGE_MESSAGES,
-					Permissions.FLAGS.MENTION_EVERYONE
-				]
+				allow: permissions
 			},
 			{
 				id: interaction.user.id,
-				type: 'member',
-				allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.ATTACH_FILES, Permissions.FLAGS.EMBED_LINKS, Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.READ_MESSAGE_HISTORY, Permissions.FLAGS.USE_EXTERNAL_EMOJIS, Permissions.FLAGS.USE_EXTERNAL_STICKERS]
+				allow: permissions
 			},
 			{
-				id: interaction.guild.roles.everyone,
-				deny: [Permissions.FLAGS.VIEW_CHANNEL]
+				id: interaction.guild.id,
+				deny: [PermissionsBitField.Flags.ViewChannel]
 			}
 		]
 	});
-	let embed = new MessageEmbed({
-		title: `${interaction.options.get('department').value.toString().replace('billing', 'Billing').replace('tech', 'Technical').replace('general', 'General')} Support - New Ticket`,
-		color: '#1AB6DC',
+	let embed = new EmbedBuilder({
+		title: `${formatDept(department)} Support - New Ticket`,
+		color: client.config.themeColor,
 		thumbnail: { url: interaction.user.avatarURL() },
 		description: `**ID:** ${id}
 		**Member:** ${interaction.user.tag} (<@!${interaction.user.id}>)
@@ -57,18 +52,18 @@ export const run: CommandRun = async (client, interaction: CommandInteraction) =
 		footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	const closeButton: MessageButton = new MessageButton({ customId: 'btn.ticket.close', label: 'Close', emoji: '🔒', style: 'DANGER' });
-	const actionRow = new MessageActionRow({ components: [closeButton] });
-	await ticket.create({ guild: interaction.guild.id, user: interaction.user.id, channel: ch.id, ticketID: id, status: 'open', department: interaction.options.getString('department') });
-	await interaction.reply({ content: `Ticket has been created. <#${ch.id}>` });
-	ch.send({ content: `<@!${interaction.user.id}>` }).then(async (msg) => await msg.delete());
-	ch.send({ embeds: [embed], components: [actionRow] }).then((msg) => msg.pin());
+	const closeButton = new ButtonBuilder({ customId: 'btn.ticket.close', label: 'Close', emoji: '🔒', style: ButtonStyle.Danger });
+	const actionRow = new ActionRowBuilder<ButtonBuilder>({ components: [closeButton] });
+	await ticket.create({ guild: interaction.guild.id, user: interaction.user.id, channel: channel.id, ticketID: id, status: 'open', department: department });
+	await interaction.reply({ content: `Ticket has been created. <#${channel.id}>`, ephemeral: true });
+	channel.send({ content: `<@!${interaction.user.id}>` }).then(async (msg) => await msg.delete());
+	channel.send({ embeds: [embed], components: [actionRow] }).then((msg) => msg.pin());
 };
 
 export const info: CommandInfo = {
 	name: 'open',
 	category: 'tickets',
-	description: 'Opens a support ticket.',
+	description: 'Open a support ticket.',
 	dm_permission: false,
 	options: [
 		{

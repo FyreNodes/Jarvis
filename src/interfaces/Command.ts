@@ -1,5 +1,5 @@
 import Client from '@/Client';
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { GuildLockResolveable } from '@/interfaces/Config';
 
 export interface Command {
@@ -8,7 +8,7 @@ export interface Command {
 }
 
 export interface CommandRun {
-	(client: Client, interaction: CommandInteraction);
+	(client: Client, interaction: ChatInputCommandInteraction);
 }
 
 export interface CommandInfo {

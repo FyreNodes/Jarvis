@@ -4,7 +4,7 @@ const Config: JarvisConfig = {
     guild: '649744489413607426',
     staffGuild: '887059550480515152',
     tickets: '979572692778877018',
-    themeColor: '#1AB6DC',
+    themeColor: 0x1AB6DC,
     roles: {
         admin: '979572665427828826',
         support: '979572666790973440',

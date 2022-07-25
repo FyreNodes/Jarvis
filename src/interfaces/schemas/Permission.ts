@@ -1,6 +1,6 @@
-import { PermissionLevel } from "@/interfaces/Config";
+import { PermissionLevel } from '@/interfaces/Config';
 
 export default interface Permission {
-    user: string;
-    level: PermissionLevel;
+	user: string;
+	level: PermissionLevel;
 }

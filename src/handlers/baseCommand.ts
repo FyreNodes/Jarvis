@@ -3,7 +3,7 @@ import { BaseCommand } from '@/Interfaces';
 import { readdirSync } from 'node:fs';
 import { grey, green, white } from 'chalk';
 
-export const baseCommandHandler = async (client: Client) => {
+export default async (client: Client) => {
 	const path: string = `${__dirname}/../base`;
 	await readdirSync(path).forEach(async (dir: string) => {
 		const commands: string[] = readdirSync(`${path}/${dir}`).filter((file: string) => file.endsWith('.ts') || file.endsWith('js'));

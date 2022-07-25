@@ -2,7 +2,7 @@ import config from '@config';
 import { Client as DiscordClient, Collection, MessageOptions, TextChannel, User } from 'discord.js';
 import { Command, BaseCommand, JarvisConfig, Button } from '@/Interfaces';
 import { LogChannel, PermissionLevel } from '@/interfaces/Config';
-import permission from './database/schemas/permission';
+import permission from '@/database/schemas/permission';
 
 export default class Client extends DiscordClient {
 	public commands: Collection<string, Command> = new Collection();
@@ -11,7 +11,7 @@ export default class Client extends DiscordClient {
 	public config: JarvisConfig = config;
 
 	public getPermissionLevel = async (user: User): Promise<PermissionLevel> => {
-		if (!await permission.exists({ user: user.id })) return 0;
+		if (!(await permission.exists({ user: user.id }))) return 0;
 		const permissionLevel = await permission.findOne({ user: user.id });
 		return permissionLevel.level;
 	};
@@ -20,4 +20,4 @@ export default class Client extends DiscordClient {
 		const channel = this.channels.cache.get(this.config.channels.logs[ch]) as TextChannel;
 		channel.send(msg);
 	};
-};
+}

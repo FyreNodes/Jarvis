@@ -106,7 +106,6 @@ dist
 # Yarn files
 /.yarn/cache
 /.yarn/install-state.gz
-yarn.lock
 
 # Temporary transcripts directory.
 /transcripts/
