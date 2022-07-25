@@ -112,3 +112,6 @@ dist
 
 # Tesseract.js Data
 eng.traineddata
+
+# Compiled App Data
+/app/
