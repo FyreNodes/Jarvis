@@ -1,8 +1,7 @@
 import { CommandInfo, CommandRun } from '@/Interfaces';
-import { CommandInteraction } from 'discord.js';
 import ms from 'ms';
 
-export const run: CommandRun = async (client, interaction: CommandInteraction) => {
+export const run: CommandRun = async (client, interaction) => {
 	const messages = await interaction.channel.messages.fetch({ limit: interaction.options.getNumber('amount') });
 	const useable = messages.filter((m) => m.createdTimestamp - Date.now() < ms('14d') && !m.pinned);
 	await interaction.channel.bulkDelete(useable);

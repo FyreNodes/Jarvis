@@ -1,5 +1,5 @@
 import Client from '@/Client';
-import { Message, MessageAttachment } from 'discord.js';
+import { Attachment, Message } from 'discord.js';
 import Tesseract from 'tesseract.js';
 import responces from '@/root/responces';
 
@@ -14,10 +14,8 @@ export default async (client: Client, message: Message) => {
 	return message.reply({ content: responces[index].value });
 };
 
-async function parseImage(image: MessageAttachment): Promise<string> {
+async function parseImage(image: Attachment): Promise<string> {
 	return new Promise<string>(async (resolve, reject) => {
-		await Tesseract.recognize(image.url, 'eng')
-			.then(async ({ data: { text } }) => resolve(text))
-			.catch(reject);
+		await Tesseract.recognize(image.url, 'eng').then(async ({ data: { text } }) => resolve(text)).catch(reject);
 	});
 }

@@ -2,7 +2,7 @@ import tag from "@/database/schemas/tag";
 import { CommandInfo, CommandRun } from "@/Interfaces";
 import permissions from "@/lib/permissions";
 import gen from "@/utils/gen";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 
 export const run: CommandRun = async (client, interaction) => {
     switch (interaction.options.getSubcommand()) {
@@ -17,7 +17,7 @@ export const run: CommandRun = async (client, interaction) => {
         case 'list':
             if (!await tag.exists({ guild: interaction.guild.id })) return await interaction.reply({ content: 'There are no tags.' });
             const lTags = await tag.find({ guild: interaction.guild.id });
-            const lEmbed = new MessageEmbed({
+            const lEmbed = new EmbedBuilder({
                 title: `${interaction.guild.name} - Tags`,
                 color: client.config.themeColor,
                 description: lTags.map((t) => {return `**ID:** ${t.id} - **Name:** ${t.name}`}).join('\n'),

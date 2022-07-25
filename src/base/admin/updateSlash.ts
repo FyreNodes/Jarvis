@@ -27,5 +27,5 @@ export const run: BaseCommandRun = (client, message, args) => {
 export const info: BaseCommandInfo = {
 	name: 'update',
 	category: 'admin',
-	permissions: ['ADMINISTRATOR']
+	permissionLevel: 8
 };

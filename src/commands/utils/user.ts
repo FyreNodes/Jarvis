@@ -2,11 +2,11 @@ import Client from "@/Client";
 import { CommandInfo, CommandRun } from "@/Interfaces";
 import getUser from "@/utils/getUser";
 import dayjs from "dayjs";
-import { Collection, GuildMember, Presence, Role, Permissions, MessageEmbed, CommandInteraction } from "discord.js";
+import { Collection, GuildMember, Presence, Role, CommandInteraction, EmbedBuilder, ActivityType, PermissionsBitField } from "discord.js";
 
 export const run: CommandRun = async (client, interaction) => {
     const member = await getUser(interaction, interaction.options.getUser('user') || interaction.user);
-    const embed = new MessageEmbed({
+    const embed = new EmbedBuilder({
 		author: { name: `User Info - ${member.user.tag}`, iconURL: member.user.avatarURL() },
 		thumbnail: { url: member.user.avatarURL() },
 		color: client.config.themeColor,
@@ -55,19 +55,19 @@ function getStatus(presence: Presence): string {
 function getActivity(presence: Presence): string {
 	let formattedActivity: string = null;
 	if (!presence) formattedActivity = 'Offline';
-	const activityData = ['PLAYING', 'LISTENING', 'STREAMING'];
+	const activityData: ActivityType[] = [ActivityType.Playing, ActivityType.Listening, ActivityType.Streaming];
 	const res = presence.activities.filter((x) => activityData.includes(x.type))[0];
 	if (!res) return (formattedActivity = 'None');
 	switch (res.type) {
-		case 'PLAYING':
+		case ActivityType.Playing:
 			formattedActivity = `Playing ${res.name}`;
 			break;
 
-		case 'LISTENING':
+		case ActivityType.Listening:
 			formattedActivity = 'Listing to Spotify';
 			break;
 
-		case 'STREAMING':
+		case ActivityType.Streaming:
 			formattedActivity = `Streaming [${res.name}](${res.url})`;
 			break;
 	}
@@ -77,7 +77,7 @@ function getActivity(presence: Presence): string {
 function getMessage(presence: Presence): string {
 	if (!presence) return 'Offline';
 	if (!presence.activities.length) return 'None';
-	if (presence.activities[0].type !== 'CUSTOM') return 'None';
+	if (presence.activities[0].type !== ActivityType.Custom) return 'None';
 	const activity = presence.activities[0];
 	let data: UserMessage = { text: null, emoji: null };
 	if (activity.emoji) if (!activity.emoji.id) data.emoji = activity.emoji.name;
@@ -95,9 +95,9 @@ async function getAcknowledgements(client: Client, member: GuildMember): Promise
 	if (member.user.id === '762931157498331157') acknowledgements.push('Jarvis Creator');
 	if ((await client.getPermissionLevel(member.user)) >= 8) acknowledgements.push('Jarvis Administrator');
 	if (member.user.id === member.guild.ownerId) acknowledgements.push('Server Owner');
-	if (member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) acknowledgements.push('Server Admin');
-	if (member.permissions.has(Permissions.FLAGS.MANAGE_GUILD, false)) acknowledgements.push('Server Manager');
-	if (member.permissions.has(Permissions.FLAGS.MODERATE_MEMBERS, false)) acknowledgements.push('Server Moderator');
+	if (member.permissions.has(PermissionsBitField.Flags.Administrator)) acknowledgements.push('Server Admin');
+	if (member.permissions.has(PermissionsBitField.Flags.ManageGuild, false)) acknowledgements.push('Server Manager');
+	if (member.permissions.has(PermissionsBitField.Flags.ModerateMembers, false)) acknowledgements.push('Server Moderator');
 	return acknowledgements.length ? acknowledgements.join(', ') : 'None';
 }
 

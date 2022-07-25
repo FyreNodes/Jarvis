@@ -1,6 +1,6 @@
 import { CommandInfo, CommandRun } from '@/Interfaces';
 import axios from 'axios';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 export const run: CommandRun = async (client, interaction) => {
 	let result = '';
@@ -16,7 +16,7 @@ export const run: CommandRun = async (client, interaction) => {
 			break;
 	}
 	const req = await axios.get(`https://api.truthordarebot.xyz/v1/${result}?rating=${rating}`);
-	let embed = new MessageEmbed({
+	let embed = new EmbedBuilder({
 		title: result.replace('truth', 'Truth').replace('dare', 'Dare'),
 		color: client.config.themeColor,
 		description: req.data.question,

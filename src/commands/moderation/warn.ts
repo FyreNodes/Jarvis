@@ -1,23 +1,23 @@
 import infraction from '@/database/schemas/infraction';
 import { CommandInfo, CommandRun } from '@/Interfaces';
 import gen from '@/utils/gen';
-import { CommandInteraction, MessageEmbed, User } from 'discord.js';
+import { EmbedBuilder, User } from 'discord.js';
 
-export const run: CommandRun = async (client, interaction: CommandInteraction) => {
+export const run: CommandRun = async (client, interaction) => {
 	const infID: number = await gen('id', 6);
 	const user: User = interaction.options.getUser('user');
 	const reason: string = interaction.options.getString('reason');
-	let userEmbed = new MessageEmbed({
+	let userEmbed = new EmbedBuilder({
 		title: 'You have been warned in FyreNodes.',
 		thumbnail: { url: interaction.guild.iconURL() },
-		color: '#FAF333',
+		color: 0xFAF333,
 		description: `**ID:** ${infID}\n**Reason:** ${reason}\n${interaction.options.getBoolean('anonymous') ? '' : `**Moderator:** ${interaction.user.tag} (<@${interaction.user.id}>)`}`,
 		footer: { text: 'Jarvis Moderation', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	let logsEmbed = new MessageEmbed({
+	let logsEmbed = new EmbedBuilder({
 		author: { name: `Infraction | Warn | ${infID}`, iconURL: user.avatarURL() },
-		color: '#FAF333',
+		color: 0xFAF333,
 		fields: [
 			{
 				name: 'User:',

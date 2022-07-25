@@ -7,6 +7,6 @@ export const run: BaseCommandRun = async (client, message, args) => {
 export const info: BaseCommandInfo = {
 	name: 'emit',
 	category: 'admin',
-	permissions: ['ADMINISTRATOR'],
+	permissions: ['Administrator'],
 	guildLock: 'main'
 };

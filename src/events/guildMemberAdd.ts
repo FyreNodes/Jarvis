@@ -1,11 +1,11 @@
-import { GuildMember, MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
+import { AttachmentBuilder, GuildMember, TextChannel } from 'discord.js';
 import { createCanvas, loadImage } from 'canvas';
 import Client from '@/Client';
 
 export default async (client: Client, member: GuildMember) => {
 	if (member.guild.id !== client.config.guild) return;
 	const background = await loadImage('./src/assets/welcome.png');
-	const avatar = await loadImage(member.user.avatarURL({ format: 'png', dynamic: false, size: 256 }));
+	const avatar = await loadImage(member.user.avatarURL({ size: 256, forceStatic: true }));
 	const canvas = createCanvas(1456, 520);
 	const ctx = canvas.getContext('2d');
 
@@ -30,6 +30,6 @@ export default async (client: Client, member: GuildMember) => {
 	ctx.font = '40px Sans';
 	ctx.fillText(`Member #${member.guild.memberCount}. Please make sure to read the rules.`, canvas.width / 2, avatar.height + 196);
 
-	const attachment = new MessageAttachment(canvas.toBuffer(), `welcome-card.png`);
+	const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'welcome-card.png' });
 	(client.channels.cache.get(client.config.channels.welcome) as TextChannel).send({ content: `Welcome <@!${member.user.id}>,`, files: [attachment] });
 };

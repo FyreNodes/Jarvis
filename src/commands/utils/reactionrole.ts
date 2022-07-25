@@ -3,12 +3,12 @@ import reactionRoleGroup from '@/database/schemas/roles/reactionRoleGroup';
 import { CommandInfo, CommandRun } from '@/Interfaces';
 import permissions from '@/lib/permissions';
 import gen from '@/utils/gen';
-import { ColorResolvable, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, MessageSelectOptionData } from 'discord.js';
+import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, ColorResolvable, EmbedBuilder, resolveColor, SelectMenuBuilder, SelectMenuComponentOptionData } from 'discord.js';
 
 export const run: CommandRun = async (client, interaction) => {
 	let subcommand: boolean = undefined;
 	await interaction.options.data.forEach(async (o) => {
-		o.type === 'SUB_COMMAND_GROUP' ? (subcommand = true) : (subcommand = false);
+		if (o.type === ApplicationCommandOptionType.SubcommandGroup) subcommand = true; else subcommand = false;
 	});
 	const id = interaction.options.getInteger('id');
 	switch (interaction.options.getSubcommand()) {
@@ -52,7 +52,7 @@ export const run: CommandRun = async (client, interaction) => {
 			if (!subcommand) {
 				if (!await reactionRole.exists({ guild: interaction.guild.id })) return await interaction.reply({ content: 'There are no reaction roles.' });
 				const roles = await reactionRole.find({ guild: interaction.guild.id });
-				let embed = new MessageEmbed({
+				let embed = new EmbedBuilder({
 					title: `${interaction.guild.name} - Reaction Roles`,
 					color: client.config.themeColor,
 					description: roles.map((r) => {return `**ID:** ${r.id} - **Name:** ${r.name} - **Role:** <@&${r.role}>`}).join('\n'), // prettier-ignore
@@ -63,7 +63,7 @@ export const run: CommandRun = async (client, interaction) => {
 			} else {
 				if (!await reactionRoleGroup.exists({ guild: interaction.guild.id })) return await interaction.reply({ content: 'There are no reaction role groups.' });
 				const groups = await reactionRoleGroup.find({ guild: interaction.guild.id });
-				let embed = new MessageEmbed({
+				let embed = new EmbedBuilder({
 					title: `${interaction.guild.name} - Reaction Role Groups`,
 					color: client.config.themeColor,
 					description: groups.map((r) => {return `**ID:** ${r.id} - **Name:** ${r.name}`}).join('\n'), // prettier-ignore
@@ -78,7 +78,7 @@ export const run: CommandRun = async (client, interaction) => {
 			if (!subcommand) {
 				if (!(await reactionRole.exists({ id: id, guild: interaction.guild.id }))) return await interaction.reply({ content: 'Invalid reaction role id specified!' });
 				const role = await reactionRole.findOne({ id: id, guild: interaction.guild.id });
-				let vEmbed = new MessageEmbed({
+				let vEmbed = new EmbedBuilder({
 					title: `${role.name} - ${role.id}`,
 					color: client.config.themeColor,
 					fields: [
@@ -92,9 +92,9 @@ export const run: CommandRun = async (client, interaction) => {
 			} else {
 				if (!(await reactionRoleGroup.exists({ id: interaction.options.getInteger('id'), guild: interaction.guild.id }))) return await interaction.reply({ content: 'Invalid group id specified!' });
 				const group = await reactionRoleGroup.findOne({ id: id, guild: interaction.guild.id });
-				let vEmbed = new MessageEmbed({
+				let vEmbed = new EmbedBuilder({
 					title: `${group.name} - ${group.id}`,
-					color: group.color || client.config.themeColor,
+					color: resolveColor(group.color) || client.config.themeColor,
 					description: group.description,
 					image: { url: group.image },
 					footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },
@@ -107,20 +107,20 @@ export const run: CommandRun = async (client, interaction) => {
 		case 'output':
 			if (!(await reactionRoleGroup.exists({ id: interaction.options.getInteger('group'), guild: interaction.guild.id }))) return await interaction.reply({ content: 'Invalid group id specified!' });
 			const group = await reactionRoleGroup.findOne({ guild: interaction.guild.id, id: interaction.options.getInteger('group') });
-			let oEmbed = new MessageEmbed({
+			let oEmbed = new EmbedBuilder({
 				title: group.name,
-				color: group.color || client.config.themeColor,
+				color: resolveColor(group.color) || client.config.themeColor,
 				description: group.description,
 				footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },
 				timestamp: Date.now()
 			});
 			const roles = await reactionRole.find({ group: interaction.options.getInteger('group'), guild: interaction.guild.id });
-			const components: MessageSelectOptionData[] = [];
+			const components: SelectMenuComponentOptionData[] = [];
 			await roles.forEach((r) => {
 				components.push({ label: r.name, description: r.description, value: `${interaction.guild.id}.rr.role.${r.id}`, emoji: null, default: false });
 			});
-			const component = new MessageSelectMenu({ customId: `${interaction.guild.id}.rr.group.${group.id}`, options: components, minValues: 0, maxValues: components.length });
-			const row = new MessageActionRow({ components: [component] });
+			const component = new SelectMenuBuilder({ customId: `${interaction.guild.id}.rr.group.${group.id}`, options: components, minValues: 0, maxValues: components.length });
+			const row = new ActionRowBuilder<SelectMenuBuilder>({ components: [component] });
 			interaction.channel.send({ embeds: [oEmbed], components: [row] });
 			break;
 
@@ -131,16 +131,16 @@ export const run: CommandRun = async (client, interaction) => {
 				await interaction.reply({ content: 'Successfully deleted reaction role.' });
 			} else {
 				if (!(await reactionRoleGroup.exists({ id: interaction.options.getInteger('id'), guild: interaction.guild.id }))) return await interaction.reply({ content: 'Invalid group id specified!' });
-				const continueButton = new MessageButton({ customId: 'btn.rr.group.delete.confirm', label: 'Continue', style: 'SUCCESS' });
-				const cancelButton = new MessageButton({ customId: 'btn.rr.group.delete.cancel', label: 'Cancel', style: 'DANGER' });
-				const row = new MessageActionRow({ components: [continueButton, cancelButton] });
+				const continueButton = new ButtonBuilder({ customId: 'btn.rr.group.delete.confirm', label: 'Continue', style: ButtonStyle.Success });
+				const cancelButton = new ButtonBuilder({ customId: 'btn.rr.group.delete.cancel', label: 'Cancel', style: ButtonStyle.Danger });
+				const row = new ActionRowBuilder<ButtonBuilder>({ components: [continueButton, cancelButton] });
 				await interaction.reply({ content: '**Warning!** This action will delete the specified group and all reaction roles in it. Would you like to continue?', components: [row] });
 				const collector = interaction.channel.createMessageComponentCollector();
 				collector.on('collect', async (int) => {
 					switch (int.customId) {
 						case 'btn.rr.group.delete.confirm':
-							continueButton.setDisabled(true);
-							cancelButton.setDisabled(true);
+							ButtonBuilder.from(continueButton).setDisabled(true);
+							ButtonBuilder.from(cancelButton).setDisabled(true);
 							await int.update({ components: [row] });
 							await reactionRole.deleteMany({ group: id, guild: interaction.guild.id });
 							await reactionRoleGroup.deleteOne({ id: id, guild: interaction.guild.id });
@@ -148,8 +148,8 @@ export const run: CommandRun = async (client, interaction) => {
 						break;
 
 						case 'btn.rr.group.delete.cancel':
-							continueButton.setDisabled(true);
-							cancelButton.setDisabled(true);
+							ButtonBuilder.from(continueButton).setDisabled(true);
+							ButtonBuilder.from(cancelButton).setDisabled(true);
 							await int.update({ components: [row] });
 							await interaction.channel.send({ content: 'Action was cancelled.' });
 						break;

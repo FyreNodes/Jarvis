@@ -1,11 +1,11 @@
 import { CommandInfo, CommandRun } from "@/Interfaces";
 import axios from "axios";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 
 export const run: CommandRun = async (client, interaction) => {
     const img = await axios.get('https://nekos.life/api/v2/img/hug');
     const user = interaction.options.getUser('user');
-    const embed = new MessageEmbed({
+    const embed = new EmbedBuilder({
         title: `${interaction.user.username} hugs ${user.username} <3`,
         color: client.config.themeColor,
         image: { url: img.data.url },

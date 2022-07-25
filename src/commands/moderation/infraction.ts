@@ -1,6 +1,7 @@
 import infraction from '@/database/schemas/infraction';
 import { CommandInfo, CommandRun } from '@/Interfaces';
-import { MessageEmbed, Permissions } from 'discord.js';
+import permissions from '@/lib/permissions';
+import { EmbedBuilder, PermissionsBitField } from 'discord.js';
 
 export const run: CommandRun = async (client, interaction) => {
 	const user = interaction.options.getUser('user');
@@ -8,9 +9,9 @@ export const run: CommandRun = async (client, interaction) => {
 	switch (interaction.options.getSubcommand()) {
 		case 'view':
 			let vInf = await infraction.find({ user: user.id });
-			let vEmbed = new MessageEmbed({
+			let vEmbed = new EmbedBuilder({
 				author: { name: `Infraction's - ${user.tag}`, iconURL: user.avatarURL() },
-				color: '#1AB6DC',
+				color: client.config.themeColor,
 				description: vInf.map((data) => {return `**ID:** ${data.infID} | **Moderator:** ${interaction.guild.members.cache.get(data.details.moderator).user.tag} | **Reason:** ${data.details.reason} ${data.details.duration ? `| **Duration:** ${data.details.duration}` : ``}`}).join('\n'), // prettier-ignore
 				thumbnail: { url: user.avatarURL() },
 				footer: { text: 'Jarvis Moderation', iconURL: client.user.avatarURL() },
@@ -20,14 +21,14 @@ export const run: CommandRun = async (client, interaction) => {
 			break;
 
 		case 'delete':
-			if (!(interaction.member.permissions as Readonly<Permissions>).has(Permissions.FLAGS.KICK_MEMBERS)) return interaction.reply({ content: 'You do not have permission!' });
+			if (!(interaction.member.permissions as Readonly<PermissionsBitField>).has(PermissionsBitField.Flags.KickMembers)) return interaction.reply({ content: 'You do not have permission!' });
 			let dInf = interaction.options.getString('id');
 			await infraction.deleteOne({ user: user.id, infID: dInf });
 			await interaction.reply({ content: 'Successfully deleted infraction.' });
 			break;
 
 		case 'clear':
-			if (!(interaction.member.permissions as Readonly<Permissions>).has(Permissions.FLAGS.BAN_MEMBERS)) return interaction.reply({ content: 'You do not have permission!' });
+			if (!(interaction.member.permissions as Readonly<PermissionsBitField>).has(PermissionsBitField.Flags.KickMembers)) return interaction.reply({ content: 'You do not have permission!' });
 			await infraction.deleteMany({ user: user.id });
 			await interaction.reply({ content: 'Successfully deleted infractions.' });
 			break;
@@ -39,7 +40,7 @@ export const info: CommandInfo = {
 	category: 'moderation',
 	description: 'Manage a users infractions',
 	dm_permission: false,
-	default_member_permissions: Number(1 << 40),
+	default_member_permissions: permissions.moderateMembers,
 	options: [
 		{
 			type: 1,

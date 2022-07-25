@@ -3,7 +3,7 @@ import getUser from "@/utils/getUser";
 
 export const run: CommandRun = async (client, interaction) => {
     const user = await getUser(interaction, interaction.options.getUser('user') || interaction.user);
-    await interaction.reply({ content: user.displayAvatarURL({ size: 512, format: 'png', dynamic: true }) });
+    await interaction.reply({ content: user.displayAvatarURL({ size: 512 }) });
 };
 
 export const info: CommandInfo = {

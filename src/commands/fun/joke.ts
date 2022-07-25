@@ -1,13 +1,13 @@
 import { CommandInfo, CommandRun } from '@/Interfaces';
 import axios from 'axios';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 export const run: CommandRun = async (client, interaction) => {
 	const req = await axios.get('https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist');
 	const category = req.data.category.toString().replace('Misc', 'Random');
 	switch (req.data.type) {
 		case 'single':
-			let sEmbed = new MessageEmbed({
+			let sEmbed = new EmbedBuilder({
 				title: `${category} Joke`,
 				color: client.config.themeColor,
 				description: req.data.joke,
@@ -18,7 +18,7 @@ export const run: CommandRun = async (client, interaction) => {
 			break;
 
 		case 'twopart':
-			let tEmbed = new MessageEmbed({
+			let tEmbed = new EmbedBuilder({
 				title: `${category} Joke`,
 				color: client.config.themeColor,
 				description: `${req.data.setup}\n\n${req.data.delivery}`,

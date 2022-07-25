@@ -1,16 +1,16 @@
 import ticket from '@/database/schemas/ticket';
 import { CommandRun, CommandInfo } from '@/Interfaces';
 import getUser from '@/utils/getUser';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
-export const run: CommandRun = async (client, interaction: CommandInteraction) => {
+export const run: CommandRun = async (client, interaction) => {
 	const member = await getUser(interaction, interaction.options.getUser('member') || interaction.member);
 	const tickets = await ticket.find({ guild: interaction.guild.id, user: member.user.id });
 	if (!tickets.length) return await interaction.reply({ content: 'The specified user has no ticket history.' });
-	let embed = new MessageEmbed({
+	let embed = new EmbedBuilder({
 		author: { name: `Ticket History | ${member.user.tag}`, iconURL: member.user.avatarURL() },
 		thumbnail: { url: member.user.avatarURL() },
-		color: '#1AB6DC',
+		color: client.config.themeColor,
 		description: tickets.map((data) => {return `**ID:** ${data.ticketID} | **Department:** ${data.department.replace('billing', 'Billing').replace('tech', 'Technical').replace('general', 'General')}`}).join('\n'), // prettier-ignore
 		footer: { text: 'Jarvis Tickets', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()

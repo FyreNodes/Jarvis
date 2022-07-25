@@ -5,7 +5,7 @@ export interface JarvisConfig {
 	guild: string;
 	staffGuild: string;
 	tickets: string;
-	themeColor: ColorResolvable;
+	themeColor: number;
 	channels: {
 		welcome: string;
 		logs: {
