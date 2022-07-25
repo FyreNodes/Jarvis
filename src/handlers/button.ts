@@ -3,7 +3,7 @@ import { Button } from '@/Interfaces';
 import { readdirSync } from 'node:fs';
 import { grey, green, white } from 'chalk';
 
-export const buttonHandler = async (client: Client) => {
+export default async (client: Client) => {
 	const path: string = `${__dirname}/../buttons`;
 	await readdirSync(path).forEach(async (dir: string) => {
 		const buttons: string[] = await readdirSync(`${path}/${dir}`).filter((file: string) => file.endsWith('.ts') || file.endsWith('.js'));

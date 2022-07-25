@@ -8,7 +8,7 @@ export const run: CommandRun = async (client, interaction) => {
 			'X-API-KEY': process.env.CAT_API_KEY
 		}
 	});
-	const attachment = new AttachmentBuilder(image.data[0].url, {name: 'cat.jpg'});
+	const attachment = new AttachmentBuilder(image.data[0].url, { name: 'cat.jpg' });
 	await interaction.reply({ files: [attachment] });
 };
 

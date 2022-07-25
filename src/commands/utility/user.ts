@@ -1,12 +1,12 @@
-import Client from "@/Client";
-import { CommandInfo, CommandRun } from "@/Interfaces";
-import getUser from "@/utils/getUser";
-import dayjs from "dayjs";
-import { Collection, GuildMember, Presence, Role, CommandInteraction, EmbedBuilder, ActivityType, PermissionsBitField } from "discord.js";
+import Client from '@/Client';
+import { CommandInfo, CommandRun } from '@/Interfaces';
+import getUser from '@/utils/getUser';
+import dayjs from 'dayjs';
+import { Collection, GuildMember, Presence, Role, CommandInteraction, EmbedBuilder, ActivityType, PermissionsBitField } from 'discord.js';
 
 export const run: CommandRun = async (client, interaction) => {
-    const member = await getUser(interaction, interaction.options.getUser('user') || interaction.user);
-    const embed = new EmbedBuilder({
+	const member = await getUser(interaction, interaction.options.getUser('user') || interaction.user);
+	const embed = new EmbedBuilder({
 		author: { name: `User Info - ${member.user.tag}`, iconURL: member.user.avatarURL() },
 		thumbnail: { url: member.user.avatarURL() },
 		color: client.config.themeColor,
@@ -24,21 +24,21 @@ export const run: CommandRun = async (client, interaction) => {
 		footer: { text: 'Jarvis Utility', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-    await interaction.reply({ embeds: [embed] });
+	await interaction.reply({ embeds: [embed] });
 };
 
 export const info: CommandInfo = {
-    name: 'user',
-    category: 'utility',
-    description: 'Get information on a user.',
-    dm_permission: false,
-    options: [
-        {
-            type: 6,
-            name: 'user',
-            description: 'The user you would like to investigate.',
-        }
-    ]
+	name: 'user',
+	category: 'utility',
+	description: 'Get information on a user.',
+	dm_permission: false,
+	options: [
+		{
+			type: 6,
+			name: 'user',
+			description: 'The user you would like to investigate.'
+		}
+	]
 };
 
 function getStatus(presence: Presence): string {

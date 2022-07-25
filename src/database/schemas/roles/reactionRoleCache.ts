@@ -1,23 +1,23 @@
-import ReactionRoleCacheInterface from "@/interfaces/schemas/roles/ReactionRoleCache";
+import ReactionRoleCacheInterface from '@/interfaces/schemas/roles/ReactionRoleCache';
 import { Schema, SchemaTypes, model } from 'mongoose';
 
 const ReactionRoleCacheSchema: Schema = new Schema({
-    guild: {
+	guild: {
 		type: SchemaTypes.String,
 		required: true
 	},
-    channel: {
+	channel: {
 		type: SchemaTypes.String,
 		required: true
 	},
-    int: {
+	int: {
 		type: SchemaTypes.String,
 		required: true
 	},
-    data: {
+	data: {
 		type: SchemaTypes.Number,
 		required: true
-	},
+	}
 });
 
 export default model<ReactionRoleCacheInterface>('reactionRoleCache', ReactionRoleCacheSchema);

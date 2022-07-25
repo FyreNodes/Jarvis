@@ -8,7 +8,8 @@ import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonSt
 export const run: CommandRun = async (client, interaction) => {
 	let subcommand: boolean = undefined;
 	await interaction.options.data.forEach(async (o) => {
-		if (o.type === ApplicationCommandOptionType.SubcommandGroup) subcommand = true; else subcommand = false;
+		if (o.type === ApplicationCommandOptionType.SubcommandGroup) subcommand = true;
+		else subcommand = false;
 	});
 	const id = interaction.options.getInteger('id');
 	switch (interaction.options.getSubcommand()) {
@@ -31,12 +32,12 @@ export const run: CommandRun = async (client, interaction) => {
 				if (interaction.options.getString('image')) {
 					if (!parseUrl(interaction.options.getString('image'))) return await interaction.reply({ content: 'Invalid image url specified!' });
 					image = interaction.options.getString('image');
-				};
+				}
 				if (interaction.options.getString('color')) {
 					if (!validateHex(interaction.options.getString('color'))) return await interaction.reply({ content: 'Invalid color specified!' });
 					color = interaction.options.getString('color').toUpperCase() as ColorResolvable;
-				};
-				await reactionRoleGroup.create({ 
+				}
+				await reactionRoleGroup.create({
 					id: rID,
 					guild: interaction.guild.id,
 					name: interaction.options.getString('name'),
@@ -50,7 +51,7 @@ export const run: CommandRun = async (client, interaction) => {
 
 		case 'list':
 			if (!subcommand) {
-				if (!await reactionRole.exists({ guild: interaction.guild.id })) return await interaction.reply({ content: 'There are no reaction roles.' });
+				if (!(await reactionRole.exists({ guild: interaction.guild.id }))) return await interaction.reply({ content: 'There are no reaction roles.' });
 				const roles = await reactionRole.find({ guild: interaction.guild.id });
 				let embed = new EmbedBuilder({
 					title: `${interaction.guild.name} - Reaction Roles`,
@@ -61,7 +62,7 @@ export const run: CommandRun = async (client, interaction) => {
 				});
 				await interaction.reply({ embeds: [embed] });
 			} else {
-				if (!await reactionRoleGroup.exists({ guild: interaction.guild.id })) return await interaction.reply({ content: 'There are no reaction role groups.' });
+				if (!(await reactionRoleGroup.exists({ guild: interaction.guild.id }))) return await interaction.reply({ content: 'There are no reaction role groups.' });
 				const groups = await reactionRoleGroup.find({ guild: interaction.guild.id });
 				let embed = new EmbedBuilder({
 					title: `${interaction.guild.name} - Reaction Role Groups`,
@@ -145,17 +146,17 @@ export const run: CommandRun = async (client, interaction) => {
 							await reactionRole.deleteMany({ group: id, guild: interaction.guild.id });
 							await reactionRoleGroup.deleteOne({ id: id, guild: interaction.guild.id });
 							await interaction.channel.send({ content: 'Successfully deleted group.' });
-						break;
+							break;
 
 						case 'btn.rr.group.delete.cancel':
 							ButtonBuilder.from(continueButton).setDisabled(true);
 							ButtonBuilder.from(cancelButton).setDisabled(true);
 							await int.update({ components: [row] });
 							await interaction.channel.send({ content: 'Action was cancelled.' });
-						break;
-					};
+							break;
+					}
 				});
-			};
+			}
 			break;
 	}
 };
@@ -316,10 +317,10 @@ export const info: CommandInfo = {
 
 function parseUrl(url: string): boolean {
 	const res = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-	return (res !== null);
-};
+	return res !== null;
+}
 
 function validateHex(hex: string): boolean {
 	if (hex.startsWith('#') && hex.length == 7) return true;
 	return false;
-};
+}

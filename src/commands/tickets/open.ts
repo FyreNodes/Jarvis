@@ -63,7 +63,7 @@ export const run: CommandRun = async (client, interaction) => {
 export const info: CommandInfo = {
 	name: 'open',
 	category: 'tickets',
-	description: 'Opens a support ticket.',
+	description: 'Open a support ticket.',
 	dm_permission: false,
 	options: [
 		{

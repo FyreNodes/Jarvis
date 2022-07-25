@@ -8,7 +8,7 @@ import interactionCreate from '@/events/interactionCreate';
 import guildMemberAdd from '@/events/guildMemberAdd';
 import guildMemberUpdate from '@/events/guildMemberUpdate';
 
-export const eventHandler = (client: Client) => {
+export default async (client: Client) => {
 	client.once('ready', () => ready(client));
 	client.on('messageCreate', async (message: Message) => messageCreate(client, message));
 	client.on('interactionCreate', async (interaction: Interaction) => interactionCreate(client, interaction));

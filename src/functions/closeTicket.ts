@@ -26,7 +26,7 @@ export default async (client: Client, interaction: ChatInputCommandInteraction |
 	let embed = new EmbedBuilder({
 		title: `Ticket Transcript | ${ticketID}`,
 		thumbnail: { url: interaction.user.avatarURL() },
-		color: 0x32B913,
+		color: 0x32b913,
 		fields: [
 			{
 				name: 'Department:',

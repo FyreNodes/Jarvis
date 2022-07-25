@@ -1,5 +1,5 @@
 export default (str: string): string => {
-    const strs: object = {
+	const strs: object = {
 		tech: 'Technical',
 		billing: 'Billing',
 		general: 'General'

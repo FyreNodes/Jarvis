@@ -15,7 +15,7 @@ export const run: CommandRun = async (client, interaction: CommandInteraction) =
 
 export const info: CommandInfo = {
 	name: 'ping',
-	category: 'utils',
+	category: 'utility',
 	description: 'Shows the bots current ping.',
 	dm_permission: true
 };

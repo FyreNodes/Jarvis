@@ -16,6 +16,6 @@ export default async (client: Client, message: Message) => {
 
 async function parseImage(image: Attachment): Promise<string> {
 	return new Promise<string>(async (resolve, reject) => {
-		await Tesseract.recognize(image.url, 'eng').then(async ({ data: { text } }) => resolve(text)).catch(reject);
+		await Tesseract.recognize(image.url, 'eng').then(async ({ data: { text } }) => resolve(text)).catch(reject); // prettier-ignore
 	});
 }

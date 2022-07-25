@@ -25,7 +25,7 @@ export default () => {
 			GatewayIntentBits.MessageContent,
 			GatewayIntentBits.GuildScheduledEvents
 		],
-		partials: [ Partials.GuildMember, Partials.User, Partials.Channel, Partials.Message, Partials.Reaction ]
+		partials: [Partials.GuildMember, Partials.User, Partials.Channel, Partials.Message, Partials.Reaction]
 	});
 
 	helpers();

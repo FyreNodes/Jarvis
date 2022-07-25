@@ -1,5 +1,6 @@
 import infraction from '@/database/schemas/infraction';
 import { CommandInfo, CommandRun } from '@/Interfaces';
+import permissions from '@/lib/permissions';
 import gen from '@/utils/gen';
 import { EmbedBuilder, User } from 'discord.js';
 
@@ -10,14 +11,14 @@ export const run: CommandRun = async (client, interaction) => {
 	let userEmbed = new EmbedBuilder({
 		title: 'You have been warned in FyreNodes.',
 		thumbnail: { url: interaction.guild.iconURL() },
-		color: 0xFAF333,
+		color: 0xfaf333,
 		description: `**ID:** ${infID}\n**Reason:** ${reason}\n${interaction.options.getBoolean('anonymous') ? '' : `**Moderator:** ${interaction.user.tag} (<@${interaction.user.id}>)`}`,
 		footer: { text: 'Jarvis Moderation', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
 	let logsEmbed = new EmbedBuilder({
 		author: { name: `Infraction | Warn | ${infID}`, iconURL: user.avatarURL() },
-		color: 0xFAF333,
+		color: 0xfaf333,
 		fields: [
 			{
 				name: 'User:',
@@ -43,14 +44,14 @@ export const run: CommandRun = async (client, interaction) => {
 export const info: CommandInfo = {
 	name: 'warn',
 	category: 'moderation',
-	description: 'Warns a member.',
-	default_member_permissions: Number(1 << 13),
+	description: 'Warn a user.',
+	default_member_permissions: permissions.manageMessages,
 	dm_permission: false,
 	options: [
 		{
 			type: 6,
 			name: 'user',
-			description: 'User to perform the action on.',
+			description: 'User to warn.',
 			required: true
 		},
 		{

@@ -1,4 +1,4 @@
-import { EmojiIdentifierResolvable } from "discord.js";
+import { EmojiIdentifierResolvable } from 'discord.js';
 
 export default interface ReactionRole {
 	id: number;

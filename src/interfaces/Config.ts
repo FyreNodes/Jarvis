@@ -1,7 +1,6 @@
-import { ColorResolvable, ExcludeEnum, PresenceStatusData } from 'discord.js';
-import { ActivityTypes } from 'discord.js/typings/enums';
+import { PresenceStatusData } from 'discord.js';
 
-export interface JarvisConfig {
+export default interface JarvisConfig {
 	guild: string;
 	staffGuild: string;
 	tickets: string;
@@ -22,7 +21,7 @@ export interface JarvisConfig {
 	presence: {
 		status: PresenceStatusData;
 		activity: {
-			type: ExcludeEnum<typeof ActivityTypes, 'CUSTOM'>;
+			type: string;
 			name: string;
 			url?: string;
 		};

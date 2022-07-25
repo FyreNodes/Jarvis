@@ -1,5 +1,6 @@
 import ticket from '@/database/schemas/ticket';
 import { CommandRun, CommandInfo } from '@/Interfaces';
+import permissions from '@/lib/permissions';
 import getUser from '@/utils/getUser';
 import { EmbedBuilder } from 'discord.js';
 
@@ -21,14 +22,14 @@ export const run: CommandRun = async (client, interaction) => {
 export const info: CommandInfo = {
 	name: 'history',
 	category: 'moderation',
-	description: 'Display a members ticket history.',
-	default_member_permissions: 0x0000000000002000,
+	description: 'View a members ticket history.',
+	default_member_permissions: permissions.moderateMembers,
 	dm_permission: false,
 	options: [
 		{
 			type: 6,
-			name: 'member',
-			description: 'The member whos history you would like to view.',
+			name: 'user',
+			description: 'The user whos history you want to view.',
 			required: false
 		}
 	]

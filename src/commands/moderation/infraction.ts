@@ -38,19 +38,19 @@ export const run: CommandRun = async (client, interaction) => {
 export const info: CommandInfo = {
 	name: 'infraction',
 	category: 'moderation',
-	description: 'Manage a users infractions',
+	description: 'Manage a users infractions.',
 	dm_permission: false,
 	default_member_permissions: permissions.moderateMembers,
 	options: [
 		{
 			type: 1,
 			name: 'view',
-			description: 'View a users infractions',
+			description: 'View a users infractions.',
 			options: [
 				{
 					type: 6,
 					name: 'user',
-					description: 'User to perform the specified action on.',
+					description: 'User whos infractions you want to view.',
 					required: true
 				}
 			]
@@ -58,12 +58,12 @@ export const info: CommandInfo = {
 		{
 			type: 1,
 			name: 'delete',
-			description: 'Delete an infraction',
+			description: 'Delete an infraction.',
 			options: [
 				{
 					type: 6,
 					name: 'user',
-					description: 'User to perform the specified action on.',
+					description: 'User whos infraction you want to delete.',
 					required: true
 				},
 				{
@@ -77,12 +77,12 @@ export const info: CommandInfo = {
 		{
 			type: 1,
 			name: 'clear',
-			description: 'Clear a users infractions',
+			description: 'Clear a users infractions.',
 			options: [
 				{
 					type: 6,
 					name: 'user',
-					description: 'User to perform the specified action on.',
+					description: 'User who you want to clear.',
 					required: true
 				}
 			]
