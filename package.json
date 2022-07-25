@@ -2,16 +2,17 @@
 	"name": "jarvis",
 	"packageManager": "yarn@3.2.0",
 	"description": "Multipurpose bot for FyreNodes Discord server.",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"main": "index.ts",
 	"engines": {
 		"node": ">=16.9.0 <18",
 		"yarn": ">=3.2.0"
 	},
 	"scripts": {
-		"prod": "yarn run build; yarn run start",
+		"_comment": "Use 'yarn prod' for local production build. Use 'yarn build' & 'yarn start' for production hosting.",
+		"start": "node -r dotenv/config index.js",
 		"build": "tsc --build; tsc-alias -p tsconfig.json;",
-		"start": "NODE_ENV=production node -r dotenv/config dist/index.js",
+		"prod": "yarn run build; cd ./app; NODE_ENV=production node -r dotenv/config app/index.js",
 		"dev": "clear; NODE_ENV=development ts-node-dev -r tsconfig-paths/register -r dotenv/config --project tsconfig.json index.ts",
 		"lint": "prettier --check 'src/**/*'",
 		"lint:fix": "prettier --write src/**/*"
