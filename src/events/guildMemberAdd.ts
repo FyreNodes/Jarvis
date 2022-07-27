@@ -1,11 +1,12 @@
 import { AttachmentBuilder, GuildMember, TextChannel } from 'discord.js';
-import { createCanvas, loadImage } from 'canvas';
+import { createCanvas, loadImage, registerFont } from 'canvas';
 import Client from '@/Client';
 
 export default async (client: Client, member: GuildMember) => {
 	if (member.guild.id !== client.config.guild) return;
+	registerFont('./src/assets/nunito.ttf', { family: 'Nunito' });
 	const background = await loadImage('./src/assets/welcome.png');
-	const avatar = await loadImage(member.user.avatarURL({ size: 256, forceStatic: true }));
+	const avatar = await loadImage(member.user.displayAvatarURL({ size: 256, forceStatic: true, extension: 'png' }));
 	const canvas = createCanvas(1456, 520);
 	const ctx = canvas.getContext('2d');
 
@@ -24,10 +25,10 @@ export default async (client: Client, member: GuildMember) => {
 	ctx.fillStyle = 'white';
 	ctx.textAlign = 'center';
 
-	ctx.font = '68px Sans';
+	ctx.font = '68px Nunito';
 	ctx.fillText(`Welcome ${member.user.username} to FyreNodes!`, canvas.width / 2, avatar.height + 136);
 
-	ctx.font = '40px Sans';
+	ctx.font = '40px Nunito';
 	ctx.fillText(`Member #${member.guild.memberCount}. Please make sure to read the rules.`, canvas.width / 2, avatar.height + 196);
 
 	const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'welcome-card.png' });
