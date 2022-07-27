@@ -1,5 +1,4 @@
 import { JarvisConfig } from "@/Interfaces";
-import { ActivityType } from "discord.js";
 
 const Config: JarvisConfig = {
     guild: '649744489413607426',
