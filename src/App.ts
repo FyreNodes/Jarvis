@@ -1,5 +1,5 @@
 import Client from '@/Client';
-import { GatewayIntentBits, Partials, Options } from 'discord.js';
+import { GatewayIntentBits, Partials, Options, ActivityType } from 'discord.js';
 import { commandHandler, baseCommandHandler, eventHandler, buttonHandler } from '@/Handlers';
 import databaseConnect from '@/database/connect';
 import helpers from '@/helpers/index';
@@ -25,7 +25,8 @@ export default () => {
 			GatewayIntentBits.MessageContent,
 			GatewayIntentBits.GuildScheduledEvents
 		],
-		partials: [Partials.GuildMember, Partials.User, Partials.Channel, Partials.Message, Partials.Reaction]
+		partials: [Partials.GuildMember, Partials.User, Partials.Channel, Partials.Message, Partials.Reaction],
+		presence: { status: 'online', activities: [{ type: ActivityType.Watching, name: 'over #Fyre' }] }
 	});
 
 	helpers();

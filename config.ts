@@ -17,13 +17,6 @@ const Config: JarvisConfig = {
             moderation: '981229355407663124',
             transcripts: '981229356443643935'
         }
-    },
-    presence: {
-        status: 'online',
-        activity: {
-            type: 'PLAYING',
-            name: 'Visual Studio Code'
-        }
     }
 }
 
