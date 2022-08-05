@@ -2,10 +2,11 @@ import { CommandInfo, CommandRun } from '@/Interfaces';
 import axios from 'axios';
 
 export const run: CommandRun = async (client, interaction) => {
+	await interaction.deferReply();
 	let rating = 'pg13';
 	if (interaction.options.getString('rating')) rating = interaction.options.getString('rating');
 	const req = await axios.get(`https://api.truthordarebot.xyz/v1/dare?rating=${rating}`);
-	await interaction.reply({ content: req.data.question });
+	await interaction.followUp({ content: req.data.question });
 };
 
 export const info: CommandInfo = {

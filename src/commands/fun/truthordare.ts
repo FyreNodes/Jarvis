@@ -3,6 +3,7 @@ import axios from 'axios';
 import { EmbedBuilder } from 'discord.js';
 
 export const run: CommandRun = async (client, interaction) => {
+	await interaction.deferReply();
 	let result = '';
 	let rating = 'pg13';
 	const truthordare = Math.floor(Math.random() * 2) + 1;
@@ -23,7 +24,7 @@ export const run: CommandRun = async (client, interaction) => {
 		footer: { text: 'Jarvis Fun', iconURL: client.user.avatarURL() },
 		timestamp: Date.now()
 	});
-	await interaction.reply({ embeds: [embed] });
+	await interaction.followUp({ embeds: [embed] });
 };
 
 export const info: CommandInfo = {

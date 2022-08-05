@@ -107,6 +107,7 @@ export const run: CommandRun = async (client, interaction) => {
 
 		case 'output':
 			if (!(await reactionRoleGroup.exists({ id: interaction.options.getInteger('group'), guild: interaction.guild.id }))) return await interaction.reply({ content: 'Invalid group id specified!' });
+			await interaction.deferReply();
 			const group = await reactionRoleGroup.findOne({ guild: interaction.guild.id, id: interaction.options.getInteger('group') });
 			let oEmbed = new EmbedBuilder({
 				title: group.name,
@@ -122,6 +123,7 @@ export const run: CommandRun = async (client, interaction) => {
 			});
 			const component = new SelectMenuBuilder({ customId: `${interaction.guild.id}.rr.group.${group.id}`, options: components, minValues: 0, maxValues: components.length });
 			const row = new ActionRowBuilder<SelectMenuBuilder>({ components: [component] });
+			await interaction.deleteReply();
 			interaction.channel.send({ embeds: [oEmbed], components: [row] });
 			break;
 

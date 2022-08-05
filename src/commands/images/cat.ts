@@ -5,7 +5,7 @@ import { AttachmentBuilder } from 'discord.js';
 export const run: CommandRun = async (client, interaction) => {
 	const image = await axios.get('https://api.thecatapi.com/v1/images/search', {
 		headers: {
-			'X-API-KEY': process.env.CAT_API_KEY
+			'X-API-KEY': process.env.CAT_API
 		}
 	});
 	const attachment = new AttachmentBuilder(image.data[0].url, { name: 'cat.jpg' });

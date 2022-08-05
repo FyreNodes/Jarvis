@@ -29,7 +29,7 @@ export default () => {
 		presence: { status: 'online', activities: [{ type: ActivityType.Watching, name: 'over #Fyre' }] }
 	});
 
-	helpers();
+	helpers(client);
 	eventHandler(client);
 	buttonHandler(client);
 	commandHandler(client);

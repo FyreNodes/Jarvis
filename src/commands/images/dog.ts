@@ -5,7 +5,7 @@ import { AttachmentBuilder } from 'discord.js';
 export const run: CommandRun = async (client, interaction) => {
 	const image = await axios.get('https://api.thedogapi.com/v1/images/search', {
 		headers: {
-			'X-API-KEY': process.env.DOG_API_KEY
+			'X-API-KEY': process.env.DOG_API
 		}
 	});
 	const attachment = new AttachmentBuilder(image.data[0].url, { name: 'dog.jpg' });
