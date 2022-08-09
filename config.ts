@@ -6,6 +6,7 @@ const Config: JarvisConfig = {
     tickets: '979572692778877018',
     themeColor: 0x1AB6DC,
     roles: {
+        dev: '1002112111914262528',
         admin: '979572665427828826',
         support: '979572666790973440',
         verified: '979572671501185065',

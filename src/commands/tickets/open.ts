@@ -9,15 +9,25 @@ export const run: CommandRun = async (client, interaction) => {
 	const id = await gen('id', 6);
 	const department = interaction.options.getString('department');
 	const permissions: bigint[] = [
-		PermissionsBitField.Flags.ViewChannel,
-		PermissionsBitField.Flags.SendMessages,
-		PermissionsBitField.Flags.AttachFiles,
 		PermissionsBitField.Flags.EmbedLinks,
+		PermissionsBitField.Flags.ViewChannel,
+		PermissionsBitField.Flags.AttachFiles,
 		PermissionsBitField.Flags.AddReactions,
-		PermissionsBitField.Flags.ReadMessageHistory,
+		PermissionsBitField.Flags.SendMessages,
 		PermissionsBitField.Flags.UseExternalEmojis,
-		PermissionsBitField.Flags.UseExternalStickers
+		PermissionsBitField.Flags.ReadMessageHistory,
+		PermissionsBitField.Flags.UseExternalStickers,
+		PermissionsBitField.Flags.SendMessagesInThreads,
+		PermissionsBitField.Flags.UseApplicationCommands
 	];
+	const adminPermissions: bigint[] = [
+		...permissions,
+		PermissionsBitField.Flags.ManageThreads,
+		PermissionsBitField.Flags.ManageMessages,
+		PermissionsBitField.Flags.MentionEveryone,
+		PermissionsBitField.Flags.CreatePublicThreads,
+		PermissionsBitField.Flags.CreatePrivateThreads
+	]
 	const channel = await interaction.guild.channels.create({
 		type: ChannelType.GuildText,
 		name: `${department}-${interaction.user.username}`,
@@ -26,6 +36,14 @@ export const run: CommandRun = async (client, interaction) => {
 		parent: client.config.tickets,
 		position: 1,
 		permissionOverwrites: [
+			{
+				id: client.config.roles.dev,
+				allow: adminPermissions
+			},
+			{
+				id: client.config.roles.admin,
+				allow: adminPermissions
+			},
 			{
 				id: client.config.roles.support,
 				allow: permissions

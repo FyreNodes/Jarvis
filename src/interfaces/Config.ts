@@ -1,5 +1,3 @@
-import { ActivityType, PresenceStatusData } from 'discord.js';
-
 export default interface JarvisConfig {
 	guild: string;
 	staffGuild: string;
@@ -13,6 +11,7 @@ export default interface JarvisConfig {
 		};
 	};
 	roles: {
+		dev: string;
 		admin: string;
 		support: string;
 		verified: string;
