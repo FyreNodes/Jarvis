@@ -3,9 +3,10 @@ Multipurpose bot for FyreNodes Discord server. Built on Discord.js in TypeScript
 
 ### Features:
 * Moderation (Basic)
-* Image Processing
+* Auto Responder (Image, Text)
 * Reaction Roles
 * Welcoming
 * Ticketing
+* Tag System
 
 ***Note:*** *No support will be provided in any way for this software. It is provided "as is" and without warranty of any kind.*
